@@ -9,11 +9,18 @@ LongFSR::LongFSR(WiFiClient client, int pin, int trigger) {
     _trigger = trigger;
 }
 
+void LongFSR::setClient(WiFiClient client){
+    _client = client;
+}
+
 void LongFSR::send(){
     int value = analogRead(_pin);
     Serial.println(value);
+    /*
     if(value > _trigger){
         Serial.println("Hugged done");
         _client.write('h');
     }
+    */
+   _client.write('h');
 }

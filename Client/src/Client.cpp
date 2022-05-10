@@ -23,7 +23,7 @@ int fsrAnalogPin = 0; // Force Sensing Resistor is connected to analog 0
 const int SOFT_POT_PIN = A1; // Pin connected to softpot wiper
 const int GRAPH_LENGTH = 40; // Length of line graph
 
-LongFSR longFSR(client,0,500);
+LongFSR longFSR(NULL,0,500);
 SmallFSR smallFSR(client,1,40);
 
 void setup() {
@@ -48,6 +48,7 @@ void setup() {
   Serial.println("WiFi connected");  
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+
 }
 
 void loop() {
@@ -63,7 +64,8 @@ void loop() {
 
   while(client.connected()){
     longFSR.send();
-    smallFSR.send();
+    //smallFSR.send();
+    client.write('h');
     delay(500);
   }
   

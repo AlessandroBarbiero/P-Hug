@@ -9,6 +9,7 @@
             LongFSR(WiFiClient client, int pin, int trigger);
             void send();
             void start(int interval, int shift);
+            void setClient(WiFiClient client);
         private:
             WiFiClient _client;
             int _pin;
