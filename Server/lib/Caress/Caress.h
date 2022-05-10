@@ -4,12 +4,12 @@
     #include "Arduino.h"
     class Caress {
         public:
-            Caress(uint8_t pins[]);
+            Caress(uint8_t pins[], int size);
             void run();
             void start(int interval, int shift);
         private:
             uint8_t _pins[MAX_PINS];
-            int _step;
+            int _step, _interval, _shift, _numOfVib;
             bool _caressing;
             unsigned long _lastCaress;
     };

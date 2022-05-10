@@ -1,5 +1,6 @@
 #include <arduino_secrets.h>
 #include <ESP8266WiFi.h>
+#include <Caress.h>
 
 // Define Pins
 #define VIB1 14
@@ -7,19 +8,19 @@
 #define VIB3 13
 #define MAX 255
 #define BUTTON A0
-#define COOLDOWN 10000
-#define INTERVAL 510
-#define HINTERVAL 255
+#define INTERVAL 255
 #define SHIFT 255
 #define NROFVIB 3
 
 void printData();
 void hug();
-void caress();
+
+uint8_t pins[NROFVIB] = {VIB1, VIB2, VIB3};
+Caress caressUnit(pins, NROFVIB);
 
 int val,i;
-unsigned long lastCaress,lastHug;
-bool caressing,hugging;
+unsigned long lastHug;
+bool hugging;
 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = SECRET_SSID;        // your network SSID (name)
@@ -34,16 +35,11 @@ IPAddress gateway(192, 168, 43, 1);
 IPAddress subnet(255, 255, 255, 0);
 WiFiServer server(tcp_port);
 void setup() {
-  //Vibration init
-  pinMode(VIB1, OUTPUT);
-  pinMode(VIB2, OUTPUT);
-  pinMode(VIB3, OUTPUT);
+  // init
   pinMode(0, OUTPUT);
   digitalWrite(0, HIGH);
-  Serial.begin(9600);
-  lastCaress = 0;
-  caressing = false;
   hugging = false;
+
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
 
@@ -64,8 +60,6 @@ void setup() {
   
   server.begin();
 
-  
-
   // you're connected now, so print out the data:
   Serial.println("You're connected to the network and Server started");
   
@@ -85,47 +79,17 @@ void loop() {
     Serial.println("new client");
     
     while (client.connected()) {
+      caressUnit.run();
+
       if (client.available()) {
         char c = (char) client.read();
         Serial.print("Message: ");
         Serial.println(c);
-        if(c=='c'){
-          caress();
-          }
-         else if(c== 'h'){
+
+        if(c=='c')
+          caressUnit.start(INTERVAL, SHIFT);
+        else if(c== 'h')
           hug();
-          }
-        
-        }
-       if (caressing){
-          
-          if(i< INTERVAL){
-              analogWrite(VIB1, i);
-              }
-            else if(i<INTERVAL*2){
-              analogWrite(VIB1, INTERVAL*2-i);
-              }
-            
-            if(i>SHIFT && i<SHIFT+INTERVAL){
-              analogWrite(VIB2, i-SHIFT);
-              }
-            else if(i>SHIFT+INTERVAL && i<SHIFT+2*INTERVAL){
-              analogWrite(VIB2, SHIFT+2*INTERVAL-i);
-              }
-      
-            if(i>2*SHIFT && i<2*SHIFT+INTERVAL){
-              analogWrite(VIB3, i-2*SHIFT);
-              }
-            else if(i>2*SHIFT+INTERVAL && i<2*SHIFT+2*INTERVAL){
-              analogWrite(VIB3, 2*SHIFT+2*INTERVAL-i);
-              }
-      
-              i++;
-              delay(1);
-              if(i == (SHIFT+INTERVAL)*(NROFVIB-1)){
-                caressing = false;
-                i=0;
-                }
         }
 
         if(hugging){
@@ -142,8 +106,8 @@ void loop() {
     
   
     // close the connection:
-    //client.stop();
-    //Serial.println("client disonnected");
+    client.stop();
+    Serial.println("client disonnected");
 }
 
 
@@ -160,28 +124,12 @@ void printData() {
   Serial.println(WiFi.SSID());
 }
 
-void caress(){
-  if(millis()- lastCaress > COOLDOWN){
-    Serial.println("Caress started at time: ");
-    
-    lastCaress = millis();
-
-    Serial.println(lastCaress);
-
-   caressing = true;
-    
-  }
-}
-
 void hug(){
-  if(millis()- lastHug > COOLDOWN){
+  if(millis()- lastHug > 5000){
     Serial.println("Hug started at time: ");
-    
     lastHug = millis();
-
     Serial.println(lastHug);
-
-   hugging = true;
+    hugging = true;
     
   }
   }
