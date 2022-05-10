@@ -1,4 +1,4 @@
-#include "arduino_secrets.h"
+#include <arduino_secrets.h>
 #include <ESP8266WiFi.h>
 
 // Define Pins
@@ -12,6 +12,11 @@
 #define HINTERVAL 255
 #define SHIFT 255
 #define NROFVIB 3
+
+void printData();
+void hug();
+void caress();
+
 int val,i;
 unsigned long lastCaress,lastHug;
 bool caressing,hugging;
