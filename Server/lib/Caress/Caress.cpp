@@ -9,6 +9,7 @@ Caress::Caress(uint8_t pins[], int size) {
     for(int i = 0; i<_numOfVib; i++)
         pinMode(_pins[i], OUTPUT);
     
+<<<<<<< HEAD
     _step = 0;
     _caressing = false;
     _lastCaress = 0;
@@ -52,3 +53,6 @@ void Caress::run(){
         }
     }
 }
+=======
+}
+>>>>>>> a7a4f0f9c59dacab14cf2381daf54546aee5055a
