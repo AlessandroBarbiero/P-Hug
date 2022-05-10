@@ -1,4 +1,6 @@
+#include <Arduino.h>
 #include <WiFi101.h>
+#include <SPI.h>
 
 // Basic code to change for caress 
 bool p1 = false;
@@ -28,17 +30,6 @@ void sendLongFSR(){
   }
 }
 
-void sendFSR(){
-  int softPotADC = analogRead(SOFT_POT_PIN);
-  // Map the 0-1023 value to 0-40
-  int softPotPosition = map(softPotADC, 0, 1023, 0, GRAPH_LENGTH);
-  Serial.print(softPotPosition);
-  if(checkAction(softPotPosition)){
-   Serial.print ("CARESS DONE");
-   client.write('c');
-  }
-}
-
 bool checkAction(int value){
 
   if(value < 5){
@@ -47,7 +38,7 @@ bool checkAction(int value){
     p3 = false;
   }
   if(value >= 5 && value < 15){
-    if (p1 = true){
+    if (p1 == true){
       p2 = true;
       p3 = false;
     }
@@ -74,6 +65,16 @@ bool checkAction(int value){
  return false;
 }
 
+void sendFSR(){
+  int softPotADC = analogRead(SOFT_POT_PIN);
+  // Map the 0-1023 value to 0-40
+  int softPotPosition = map(softPotADC, 0, 1023, 0, GRAPH_LENGTH);
+  Serial.print(softPotPosition);
+  if(checkAction(softPotPosition)){
+   Serial.print ("CARESS DONE");
+   client.write('c');
+  }
+}
 
 
 void setup() {
