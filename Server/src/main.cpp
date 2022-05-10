@@ -70,9 +70,9 @@ void setup() {
 
 void loop() {
   // check the network connection once every 10 seconds:
- //delay(1000);
- //printData();
- //Serial.println("----------------------------------------");
+  delay(1000);
+  printData();
+  Serial.println("----------------------------------------");
 
   WiFiClient client = server.available();
   if (client) {
