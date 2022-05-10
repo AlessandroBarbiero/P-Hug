@@ -4,11 +4,11 @@
 #define COOLDOWN 10000
 
 Caress::Caress(uint8_t pins[], int size) {
-    *_pins = *pins;
     _numOfVib = size;
-    for(int i = 0; i<_numOfVib; i++)
+    for(int i = 0; i<_numOfVib; i++) {
+        _pins[i] = pins[i];
         pinMode(_pins[i], OUTPUT);
-    
+    }
     _step = 0;
     _caressing = false;
     _lastCaress = 0;
@@ -31,12 +31,10 @@ void Caress::run(){
     if (_caressing){
         int relativeStep;
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
-            Serial.println(pinIndex);
             relativeStep = _step - pinIndex*_shift;
             if(relativeStep > 0){
                 if(relativeStep < _interval){
                     analogWrite(_pins[pinIndex], relativeStep);
-                    Serial.println(_pins[pinIndex]);
                 }
                 else if(relativeStep < 2 * _interval)
                     analogWrite(_pins[pinIndex], _interval*2-relativeStep);

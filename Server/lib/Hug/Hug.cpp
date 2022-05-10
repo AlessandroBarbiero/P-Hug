@@ -14,22 +14,22 @@ Hug::Hug() {
     digitalWrite(_pin, HIGH);
 }
 
-Hug::run() {
+void Hug::run() {
     if(_hugging) {
         digitalWrite(_pin, LOW);
-        if(millis() - lastHug > HCOOLDOWN) {
+        if(millis() - _lastHug > HCOOLDOWN) {
             digitalWrite(_pin, HIGH);
             _hugging = false;
         }
     }
 }
 
-Hug::start() {
-    if(millis() - lastHug > HCOOLDOWN) {
+void Hug::start() {
+    if(millis() - _lastHug > HCOOLDOWN) {
         _lastHug = millis();
         _hugging = true;
 
         Serial.println("Hug started at time: ");
-        Serial.println(lastHug);
+        Serial.println(_lastHug);
     }
 }
