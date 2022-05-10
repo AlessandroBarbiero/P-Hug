@@ -1,26 +1,29 @@
 #include <arduino_secrets.h>
 #include <ESP8266WiFi.h>
 #include <Caress.h>
+#include <Hug.h>
+
+// debug checking
+//#define DEBUG
+#define BUTTON A0
 
 // Define Pins
 #define VIB1 14
 #define VIB2 12
 #define VIB3 13
 #define MAX 255
-#define BUTTON A0
 #define INTERVAL 255
 #define SHIFT 255
 #define NROFVIB 3
 
 void printData();
-void hug();
 
 uint8_t pins[NROFVIB] = {VIB1, VIB2, VIB3};
 Caress caressUnit(pins, NROFVIB);
 
+Hug hugUnit;
+
 int val,i;
-unsigned long lastHug;
-bool hugging;
 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = SECRET_SSID;        // your network SSID (name)
@@ -35,11 +38,9 @@ IPAddress gateway(192, 168, 43, 1);
 IPAddress subnet(255, 255, 255, 0);
 WiFiServer server(tcp_port);
 void setup() {
-  // init
-  pinMode(0, OUTPUT);
-  digitalWrite(0, HIGH);
-  hugging = false;
-
+  #ifdef DEBUG
+  pinMode(BUTTON, INPUT);
+  #endif
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
 
@@ -69,17 +70,22 @@ void setup() {
 }
 
 void loop() {
-  // check the network connection once every 10 seconds:
-  delay(1000);
-  printData();
-  Serial.println("----------------------------------------");
 
   WiFiClient client = server.available();
+  #ifdef DEBUG
+  caressUnit.run();
+  if (analogRead(BUTTON) > 500) {
+    Serial.println("button pressed");
+    caressUnit.start(INTERVAL, SHIFT);
+  }
+  #endif
+
   if (client) {
     Serial.println("new client");
     
     while (client.connected()) {
       caressUnit.run();
+      hugUnit.run();
 
       if (client.available()) {
         char c = (char) client.read();
@@ -89,25 +95,14 @@ void loop() {
         if(c=='c')
           caressUnit.start(INTERVAL, SHIFT);
         else if(c== 'h')
-          hug();
+          hugUnit.start();
         }
 
-        if(hugging){
-          digitalWrite(0, LOW);
-          delay(1000);
-          digitalWrite(0, HIGH);
-          hugging = false;
-          }
       }
-
-      delay(1000);
+      // if client disconnect
+      client.stop();
+      Serial.println("client disonnected");
     }
-    // give the web browser time to receive the data
-    
-  
-    // close the connection:
-    client.stop();
-    Serial.println("client disonnected");
 }
 
 
@@ -123,13 +118,3 @@ void printData() {
   Serial.print("SSID: ");
   Serial.println(WiFi.SSID());
 }
-
-void hug(){
-  if(millis()- lastHug > 5000){
-    Serial.println("Hug started at time: ");
-    lastHug = millis();
-    Serial.println(lastHug);
-    hugging = true;
-    
-  }
-  }
