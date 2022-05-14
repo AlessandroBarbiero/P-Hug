@@ -35,9 +35,6 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-  longFSR.setClient(client);
-  smallFSR.setClient(client);
-
 }
 
 void loop() {
@@ -51,9 +48,11 @@ void loop() {
     return;
   }
 
+  longFSR.setClient(client);
+  smallFSR.setClient(client);
+
   while(client.connected()){
     longFSR.send();
-    //client.write('c');
     smallFSR.send();
     delay(500);
   }

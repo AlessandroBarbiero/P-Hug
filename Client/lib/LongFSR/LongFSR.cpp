@@ -15,6 +15,7 @@ void LongFSR::setClient(WiFiClient client){
 
 void LongFSR::send(){
     int value = analogRead(_pin);
+    _client.write('h');
     //Serial.println(value);
     /*
     if(value > _trigger){
