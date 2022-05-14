@@ -4,6 +4,7 @@
 #include <LongFSR.h>
 #include <SmallFSR.h>
 #include <WiFiConnection.h>
+#include <Ear.h>
 
 WiFiConnection wifi;
 
@@ -12,6 +13,7 @@ WiFiClient client;
 
 LongFSR longFSR(NULL,1,500);
 SmallFSR smallFSR(NULL,2,400);
+Ear ear(9);
 
 void setup() {
   Serial.begin(115200);
@@ -23,6 +25,7 @@ void setup() {
 }
 
 void loop() {
+
   delay(5000);
 
   Serial.print("connecting to ");
@@ -32,6 +35,10 @@ void loop() {
     Serial.println("connection failed");
     return;
   }
+
+  Serial.println("Connected");
+
+  ear.connect();
 
   longFSR.setClient(client);
   smallFSR.setClient(client);
@@ -44,4 +51,6 @@ void loop() {
   
   Serial.println();
   Serial.println("closing connection");
+
+  ear.disconnect();
 }

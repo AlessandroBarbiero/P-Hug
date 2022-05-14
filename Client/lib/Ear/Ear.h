@@ -6,10 +6,14 @@
     class Ear {
         public:
             Ear(int pin);
+            void action();
+            void connect();
+            void disconnect();
         private:
             WiFiClient _client;
             int _pin;
-            int angle = 0;
+            Servo _servo;
+            int _angle = 0;
     };
     
 #endif
