@@ -6,18 +6,15 @@
     #include "Arduino.h"
     class SmallFSR {
         public:
-            SmallFSR(WiFiClient client, int pin, int mapping);
+            SmallFSR(WiFiClient client, int pin, int trigger);
+            void setClient(WiFiClient client);
             void send();
             void start(int interval, int shift);
-            bool checkAction(int position);
         private:
             WiFiClient _client;
             int _pin;
-            int _mapping;
+            int _trigger;
             int _step;
-            bool p1 = false;
-            bool p2 = false;
-            bool p3 = false;
     };
     
 #endif
