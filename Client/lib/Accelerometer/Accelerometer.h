@@ -2,15 +2,18 @@
     #define Accelerometer_h
     #include "Arduino.h"
     #include <WiFi101.h>
+    #include <Adafruit_MPU6050.h>
+    #include <Adafruit_Sensor.h>
+    #include <Wire.h>
     class Accelerometer {
         public:
             Accelerometer();
             void setClient(WiFiClient client);
             void send();
-            void start(int interval, int shift);
+            void print();
         private:
             WiFiClient _client;
-            int _pin;
+            Adafruit_MPU6050 _mpu;
     };
     
 #endif
