@@ -4,7 +4,7 @@
     #include <WiFi101.h>
     class Accelerometer {
         public:
-            Accelerometer(WiFiClient client, int pin);
+            Accelerometer();
             void setClient(WiFiClient client);
             void send();
             void start(int interval, int shift);
