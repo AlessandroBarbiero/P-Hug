@@ -5,6 +5,7 @@
 #include <SmallFSR.h>
 #include <WiFiConnection.h>
 #include <Ear.h>
+#include <Accelerometer.h>
 
 WiFiConnection wifi;
 
@@ -14,19 +15,24 @@ WiFiClient client;
 LongFSR longFSR(NULL,1,500);
 SmallFSR smallFSR(NULL,2,400);
 Ear ear(9);
+Accelerometer accelerometer;
 
 void setup() {
   Serial.begin(115200);
   delay(100);
-
+  accelerometer.setup();
   // We start by connecting to a WiFi network
-  wifi.setup();
+  //wifi.setup();
 
 }
 
 void loop() {
 
   delay(5000);
+
+  while(1){
+    accelerometer.print();
+  }
 
   Serial.print("connecting to ");
   Serial.println(wifi.getHost());

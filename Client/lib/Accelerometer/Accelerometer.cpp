@@ -2,15 +2,19 @@
 
 
 Accelerometer::Accelerometer() {
+}
+
+void Accelerometer::setup(){
   while (!_mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
     delay(1000);
   }
+  Serial.println("MPU6050 chip configured");
   _mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
   _mpu.setGyroRange(MPU6050_RANGE_250_DEG);
   _mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
   delay(100);
-}
+};
 
 void Accelerometer::setClient(WiFiClient client){
     _client = client;

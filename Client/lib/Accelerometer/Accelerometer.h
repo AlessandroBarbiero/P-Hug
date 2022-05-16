@@ -8,6 +8,7 @@
     class Accelerometer {
         public:
             Accelerometer();
+            void setup();
             void setClient(WiFiClient client);
             void send();
             void print();
