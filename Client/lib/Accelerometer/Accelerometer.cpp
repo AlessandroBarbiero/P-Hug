@@ -41,7 +41,5 @@ void Accelerometer::print(){
   Serial.print(g.gyro.y);
   Serial.print("\tz-gyro:");
   Serial.println(g.gyro.z);
-
-  delay(100);
   
 }

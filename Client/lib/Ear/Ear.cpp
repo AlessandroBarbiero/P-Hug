@@ -5,6 +5,7 @@
 Ear::Ear(int pin){
     _pin = pin;
     _servo.attach(pin);
+    _servo.write(0);
 }
 
 void Ear::action(){

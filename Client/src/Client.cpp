@@ -8,10 +8,7 @@
 #include <Accelerometer.h>
 
 WiFiConnection wifi;
-
-// Use WiFiClient class to create TCP connections
 WiFiClient client;
-
 LongFSR longFSR(NULL,1,500);
 SmallFSR smallFSR(NULL,2,400);
 Ear ear(9);
@@ -21,9 +18,7 @@ void setup() {
   Serial.begin(115200);
   delay(100);
   accelerometer.setup();
-  // We start by connecting to a WiFi network
-  //wifi.setup();
-
+  wifi.setup();
 }
 
 void loop() {
@@ -50,6 +45,7 @@ void loop() {
   smallFSR.setClient(client);
 
   while(client.connected()){
+    accelerometer.print();
     longFSR.send();
     smallFSR.send();
     delay(500);
