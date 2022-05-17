@@ -11,6 +11,16 @@
 #define VIB1 14
 #define VIB2 12
 #define VIB3 13
+#define VIB4 15
+#define VIB5 0      // not good
+#define VIB6 16     // maybe good
+#define VIB7 2      // maybe good
+#define VIB8 5      // maybe good
+#define VIB9 4      // maybe good
+
+#define RX 3
+#define TX 1
+
 #define MAX 255
 #define INTERVAL 255
 #define SHIFT 255
@@ -79,7 +89,7 @@ void loop() {
     caressUnit.start(INTERVAL, SHIFT);
   }
   #endif
-
+  
   if (client) {
     Serial.println("new client");
     
@@ -92,16 +102,23 @@ void loop() {
         Serial.print("Message: ");
         Serial.println(c);
 
-        if(c=='c')
+        if(c=='c') {
           caressUnit.start(INTERVAL, SHIFT);
-        else if(c== 'h')
-          hugUnit.start();
         }
-
+        else if(c== 'h') {
+          hugUnit.start();
+        }   
+        }
+      
       }
       // if client disconnect
-      client.stop();
-      Serial.println("client disonnected");
+      if (!client.connected()) {
+        client.stop();
+        Serial.println("Client disonnected");
+        }
+      Serial.println(client.status());
+    
+    
     }
 }
 

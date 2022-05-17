@@ -29,7 +29,9 @@ void Hug::start() {
         _lastHug = millis();
         _hugging = true;
 
+        Serial.flush();
         Serial.println("Hug started at time: ");
+        Serial.flush();
         Serial.println(_lastHug);
     }
 }
