@@ -9,14 +9,14 @@ Ear::Ear(int pin){
 }
 
 void Ear::action(){
-    for(_angle = 0; _angle < 180; _angle += 1 ){
+    for(_angle = 0; _angle < 15; _angle += 1 ){
         _servo.write(_angle);                 
         delay(15);
     }
 
     delay(1000);
 
-    for(_angle = 180; _angle>=1; _angle-=5){
+    for(_angle = 15; _angle>=1; _angle-=5){
         _servo.write(_angle);              
         delay(5); 
     }
@@ -26,7 +26,7 @@ void Ear::action(){
 }
 
 void Ear::connect(){
-    _servo.write(180);
+    _servo.write(40);
 }
 
 void Ear::disconnect(){

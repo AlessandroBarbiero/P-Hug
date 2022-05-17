@@ -6,6 +6,7 @@
 #include <WiFiConnection.h>
 #include <Ear.h>
 #include <Accelerometer.h>
+#include <Speaker.h>
 
 WiFiConnection wifi;
 WiFiClient client;
@@ -13,10 +14,12 @@ LongFSR longFSR(NULL,1,500);
 SmallFSR smallFSR(NULL,2,400);
 Ear ear(9);
 Accelerometer accelerometer;
+Speaker speaker;
 
 void setup() {
   Serial.begin(115200);
   delay(100);
+  speaker.setup();
   accelerometer.setup();
   wifi.setup();
 }
@@ -24,10 +27,6 @@ void setup() {
 void loop() {
 
   delay(5000);
-
-  while(1){
-    accelerometer.print();
-  }
 
   Serial.print("connecting to ");
   Serial.println(wifi.getHost());
@@ -39,12 +38,14 @@ void loop() {
 
   Serial.println("Connected");
 
+  speaker.connect();
   ear.connect();
 
   longFSR.setClient(client);
   smallFSR.setClient(client);
 
   while(client.connected()){
+    wifi.ping(client);
     accelerometer.print();
     longFSR.send();
     smallFSR.send();
@@ -54,5 +55,6 @@ void loop() {
   Serial.println();
   Serial.println("closing connection");
 
+  speaker.disconnect();
   ear.disconnect();
 }

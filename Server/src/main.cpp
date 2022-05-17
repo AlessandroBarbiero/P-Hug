@@ -1,16 +1,24 @@
-#include <arduino_secrets.h>
+/**
+ * Please enter your sensitive data in the include/Secrets.h to run the WiFi network
+ *
+ */
+
+#include <Secrets.h>
 #include <ESP8266WiFi.h>
 #include <Caress.h>
 #include <Hug.h>
+#include <WiFiConnection.h>
 
 // debug checking
-//#define DEBUG
-#define BUTTON A0
+// #define DEBUG
+// #define BUTTON A0
 
 // Define Pins
 #define VIB1 14
 #define VIB2 12
 #define VIB3 13
+#define NROFVIB 3
+// Define the vibration settings
 #define VIB4 15
 #define VIB5 0      // not good
 #define VIB6 16     // maybe good
@@ -18,108 +26,67 @@
 #define VIB8 5      // maybe good
 #define VIB9 4      // maybe good
 
+
 #define RX 3
 #define TX 1
-
-#define MAX 255
 #define INTERVAL 255
 #define SHIFT 255
-#define NROFVIB 3
-
 #define INFLATECOOLDOWN 5000
 #define STARTCOOLDOWN 10000
 
-void printData();
 
 unsigned long lastPing;
 
 uint8_t pins[NROFVIB] = {VIB1, VIB2, VIB3};
 Caress caressUnit(pins, NROFVIB);
 
+WiFiServer server(TCP_PORT);
+WiFiConnection wifi(SECRET_SSID, SECRET_PASS, server);
+char msg;
 Hug hugUnit(INFLATECOOLDOWN, STARTCOOLDOWN);
 
-int val,i;
-
-///////please enter your sensitive data in the Secret tab/arduino_secrets.h
-char ssid[] = SECRET_SSID;        // your network SSID (name)
-char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
-// mac address for M-Duino
-
-int data = 0;
-int tcp_port = 5566;
-IPAddress ip(192, 168, 43, 179); 
-IPAddress gateway(192, 168, 43, 1);
-IPAddress subnet(255, 255, 255, 0);
-WiFiServer server(tcp_port);
 void setup() {
   #ifdef DEBUG
   pinMode(BUTTON, INPUT);
   #endif
+
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
-  
-  WiFi.config(ip, gateway, subnet);
   while (!Serial);
-  
-  // attempt to connect to Wifi network:
-  while (status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to network: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network:
-    status = WiFi.begin(ssid, pass);
 
-    // wait 10 seconds for connection:
-    delay(10000);
-    
-  }
-  
-  server.begin();
-
-  // you're connected now, so print out the data:
-  Serial.println("You're connected to the network and Server started");
-  
-  Serial.println("----------------------------------------");
-  printData();
-  Serial.println("----------------------------------------");
+  wifi.setup();
 }
 
 void loop() {
 
-  WiFiClient client = server.available();
   #ifdef DEBUG
   caressUnit.run();
   if (analogRead(BUTTON) > 500) {
     Serial.println("button pressed");
     caressUnit.start(INTERVAL, SHIFT);
   }
-  #endif
-
-  if (client) {
-    IPAddress clientIP = client.remoteIP();
-    Serial.println("New client:");
-    Serial.println(clientIP);
     
-    lastPing = millis();
+  #else
 
-    while (client.connected()) {
+  if (wifi.searchClient()) {
+    Serial.println("new client");
+    lastPing = millis();
+    
+    while (wifi.isClientConnected()) {
       caressUnit.run();
       hugUnit.run();
 
-      if (client.available()) {
-        char c = (char) client.read();
+      if (wifi.checkMessage()) {
+        msg = wifi.readMessage(); 
         Serial.print("Message: ");
-        Serial.println(c);
+        Serial.println(msg);
 
-        if(c=='c') {
+        if(msg=='c')
           caressUnit.start(INTERVAL, SHIFT);
-        }
-        else if(c== 'h') {
-          hugUnit.start();
-        }  
-        else if(c== 'p') {
+        else if(msg== 'h')
+          hugUnit.start(); 
+        else if(msg== 'p') 
           lastPing = millis();
-        } 
         }
       
       // if client disconnect
@@ -129,18 +96,5 @@ void loop() {
       }
       }
     }
-}
-
-
-void printData() {
-  Serial.println("Board Information:");
-  // print your board's IP address:
-  IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
-
-  Serial.println();
-  Serial.println("Network Information:");
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
+    #endif
 }
