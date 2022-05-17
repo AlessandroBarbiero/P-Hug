@@ -91,8 +91,7 @@ void loop() {
       
       // if client disconnect
       if (millis() - lastPing > 5000) {
-        client.stop();
-        Serial.println("Client disconnected");
+        wifi.stopClient();
       }
       }
     }

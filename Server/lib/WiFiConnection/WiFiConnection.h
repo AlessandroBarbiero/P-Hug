@@ -12,6 +12,7 @@
             bool isClientConnected();
             bool checkMessage();
             char readMessage();
+            void stopClient();
         private:
             void printData();
             String _ssid;

@@ -54,6 +54,11 @@ char WiFiConnection::readMessage(){
     return (char) _client.read();
 }
 
+void WiFiConnection::stopClient(){
+    _client.stop();
+    Serial.println("Client disconnected");
+}
+
 //---private
 void WiFiConnection::printData() {
   Serial.println("Board Information:");
