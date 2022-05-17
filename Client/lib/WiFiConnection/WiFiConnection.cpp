@@ -52,3 +52,7 @@ void WiFiConnection::connect(){
         return;
     }
 }
+
+void WiFiConnection::ping(WiFiClient client){
+    client.write('p');
+}

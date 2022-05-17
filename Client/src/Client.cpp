@@ -38,12 +38,14 @@ void loop() {
 
   Serial.println("Connected");
 
+  speaker.connect();
   ear.connect();
 
   longFSR.setClient(client);
   smallFSR.setClient(client);
 
   while(client.connected()){
+    wifi.ping(client);
     accelerometer.print();
     longFSR.send();
     smallFSR.send();
@@ -53,5 +55,6 @@ void loop() {
   Serial.println();
   Serial.println("closing connection");
 
+  speaker.disconnect();
   ear.disconnect();
 }

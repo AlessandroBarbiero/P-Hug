@@ -19,11 +19,17 @@ void Speaker::setup(){
     }
     Serial.println(F("DFPlayer Mini online."));
     _myDFPlayer.volume(25);  //Set volume value. From 0 to 30
-    _myDFPlayer.play(1);  //Play the first mp3
 
 }
 
-void Speaker::run(){
-    
+void Speaker::connect(){
+    _myDFPlayer.play(1); 
+}
 
+void Speaker::disconnect(){
+    _myDFPlayer.play(2); 
+}
+
+void Speaker::run(){
+    _myDFPlayer.play(3); 
 }

@@ -6,6 +6,8 @@
         public:
             Speaker();
             void setup();
+            void connect();
+            void disconnect();
             void run();
         private:
             DFRobotDFPlayerMini _myDFPlayer;

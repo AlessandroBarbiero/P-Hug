@@ -13,6 +13,7 @@
             WiFiClient getClient();
             void setup();
             void connect();
+            void ping(WiFiClient client);
         private:
             char* _ssid     = "Armor 8";
             char* _password = "0032074b4f8e";
