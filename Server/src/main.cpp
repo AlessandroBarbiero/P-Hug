@@ -31,6 +31,8 @@
 
 void printData();
 
+unsigned long lastPing;
+
 uint8_t pins[NROFVIB] = {VIB1, VIB2, VIB3};
 Caress caressUnit(pins, NROFVIB);
 
@@ -56,7 +58,7 @@ void setup() {
   #endif
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
-
+  
   WiFi.config(ip, gateway, subnet);
   while (!Serial);
   
@@ -92,10 +94,14 @@ void loop() {
     caressUnit.start(INTERVAL, SHIFT);
   }
   #endif
-  
+
   if (client) {
-    Serial.println("new client");
+    IPAddress clientIP = client.remoteIP();
+    Serial.println("New client:");
+    Serial.println(clientIP);
     
+    lastPing = millis();
+
     while (client.connected()) {
       caressUnit.run();
       hugUnit.run();
@@ -110,18 +116,18 @@ void loop() {
         }
         else if(c== 'h') {
           hugUnit.start();
-        }   
+        }  
+        else if(c== 'p') {
+          lastPing = millis();
+        } 
         }
       
-      }
       // if client disconnect
-      if (!client.connected()) {
+      if (millis() - lastPing > 5000) {
         client.stop();
-        Serial.println("Client disonnected");
-        }
-      Serial.println(client.status());
-    
-    
+        Serial.println("Client disconnected");
+      }
+      }
     }
 }
 
