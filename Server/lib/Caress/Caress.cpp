@@ -1,4 +1,3 @@
-//MyBlink.cpp
 #include <Arduino.h>
 #include <Caress.h>
 #define COOLDOWN 10000
@@ -15,16 +14,18 @@ Caress::Caress(uint8_t pins[], int size) {
 }
 
 void Caress::start(int interval, int shift){
-    if(millis()- _lastCaress > COOLDOWN){
+    if(millis() - _lastCaress > COOLDOWN){
         Serial.println("Caress started at time: ");
         _lastCaress = millis();
         Serial.println(_lastCaress);
         
         _interval=interval;
         _shift = shift;
-
         _caressing = true;
-        }
+
+        return;
+    }
+    Serial.println("Caress waiting for cooldown");
 }
 
 void Caress::run(){
