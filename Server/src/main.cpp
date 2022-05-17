@@ -31,14 +31,18 @@
 #define TX 1
 #define INTERVAL 255
 #define SHIFT 255
+#define INFLATECOOLDOWN 5000
+#define STARTCOOLDOWN 10000
+
 
 uint8_t pins[NROFVIB] = {VIB1, VIB2, VIB3};
 Caress caressUnit(pins, NROFVIB);
 
-Hug hugUnit;
 WiFiServer server(TCP_PORT);
 WiFiConnection wifi(SECRET_SSID, SECRET_PASS, server);
 char msg;
+Hug hugUnit(INFLATECOOLDOWN, STARTCOOLDOWN);
+
 void setup() {
   #ifdef DEBUG
   pinMode(BUTTON, INPUT);

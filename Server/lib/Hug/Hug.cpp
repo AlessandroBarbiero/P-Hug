@@ -1,12 +1,13 @@
 //Hug.cpp
 #include <Arduino.h>
 #include <Hug.h>
-#define HCOOLDOWN 5000
 
-Hug::Hug() {
+Hug::Hug(int inflateCooldown, int startCooldown) {
     // Variables
     _hugging = false;
     _lastHug = 0;
+    _inflateCooldown = inflateCooldown;
+    _startCooldown = startCooldown;
 
     // Pin
     _pin = 0; // LED. TODO: change to output pin for pump
@@ -17,7 +18,7 @@ Hug::Hug() {
 void Hug::run() {
     if(_hugging) {
         digitalWrite(_pin, LOW);
-        if(millis() - _lastHug > HCOOLDOWN) {
+        if(millis() - _lastHug > _inflateCooldown) {
             digitalWrite(_pin, HIGH);
             _hugging = false;
         }
@@ -25,7 +26,7 @@ void Hug::run() {
 }
 
 void Hug::start() {
-    if(millis() - _lastHug > HCOOLDOWN) {
+    if(millis() - _lastHug > _startCooldown) {
         _lastHug = millis();
         _hugging = true;
 
