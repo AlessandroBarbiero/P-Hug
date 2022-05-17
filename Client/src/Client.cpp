@@ -25,10 +25,6 @@ void loop() {
 
   delay(5000);
 
-  while(1){
-    accelerometer.print();
-  }
-
   Serial.print("connecting to ");
   Serial.println(wifi.getHost());
 
