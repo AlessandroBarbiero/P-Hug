@@ -1,6 +1,9 @@
 #include <Speaker.h>
 
 Speaker::Speaker(){
+}
+
+void Speaker::setup(){
     Serial1.begin(9600);
     Serial.println();
     Serial.println(F("DFRobot DFPlayer Mini Demo"));
@@ -17,5 +20,10 @@ Speaker::Speaker(){
     Serial.println(F("DFPlayer Mini online."));
     _myDFPlayer.volume(25);  //Set volume value. From 0 to 30
     _myDFPlayer.play(1);  //Play the first mp3
+
+}
+
+void Speaker::run(){
+    
 
 }

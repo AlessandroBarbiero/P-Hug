@@ -5,8 +5,8 @@
     class Speaker{
         public:
             Speaker();
+            void setup();
             void run();
-            void connect();
         private:
             DFRobotDFPlayerMini _myDFPlayer;
 
