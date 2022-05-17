@@ -26,12 +26,15 @@
 #define SHIFT 255
 #define NROFVIB 3
 
+#define INFLATECOOLDOWN 5000
+#define STARTCOOLDOWN 10000
+
 void printData();
 
 uint8_t pins[NROFVIB] = {VIB1, VIB2, VIB3};
 Caress caressUnit(pins, NROFVIB);
 
-Hug hugUnit;
+Hug hugUnit(INFLATECOOLDOWN, STARTCOOLDOWN);
 
 int val,i;
 
