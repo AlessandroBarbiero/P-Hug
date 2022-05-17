@@ -3,15 +3,15 @@
     #include "Arduino.h"
     class Hug  {
         public:
-            Hug(int inflateCooldown, int startCooldown);
+            Hug(unsigned long inflateCooldown, unsigned long startCooldown);
             void run();
             void start();
         private:
             uint8_t _pin;
             bool _hugging;
             unsigned long _lastHug;
-            int _inflateCooldown;
-            int _startCooldown;
+            unsigned long _inflateCooldown;
+            unsigned long _startCooldown;
     };
     
 #endif

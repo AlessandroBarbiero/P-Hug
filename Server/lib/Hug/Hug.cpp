@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include <Hug.h>
 
-Hug::Hug(int inflateCooldown, int startCooldown) {
+Hug::Hug(unsigned long inflateCooldown, unsigned long startCooldown) {
     // Variables
     _hugging = false;
     _lastHug = 0;
