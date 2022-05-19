@@ -56,6 +56,8 @@ void CaressHandler::run(){
         getClient().write("C");
         Serial.println(F("Caress Done"));
         _speaker.caress();
+        _ear1.caress();
+        _ear2.caress();
         setReady(false);
     }
 }

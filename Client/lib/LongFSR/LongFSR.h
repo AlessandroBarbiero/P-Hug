@@ -6,15 +6,20 @@
     #include "Arduino.h"
     class LongFSR {
         public:
+            LongFSR();
             LongFSR(WiFiClient client, int pin, int trigger);
-            void send();
-            void start(int interval, int shift);
+            WiFiClient getClient();
+            int getTrigger();
+            bool isActive();
             void setClient(WiFiClient client);
+            void setActive(bool active);
+            void send();
+            void run();
         private:
             WiFiClient _client;
             int _pin;
             int _trigger;
-            int _step;
+            bool _active = false;
     };
     
 #endif

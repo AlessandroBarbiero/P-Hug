@@ -1,31 +1,29 @@
-#ifndef HugHandler_h
-    #define HugHandler_h
-    #include <Arduino.h>
-    #include <LongFSR.h>
-    #include <Speaker.h>
-    #include <Ear.h>
-    #include <WiFi101.h>
-    class HugHandler {
-        public:
-            HugHandler(LongFSR, Ear ear1, Ear ear2);
-            WiFiClient getClient();
-            unsigned long getActivationTime();
-            int getDuration();
-            bool getReady();
-            void setClient(WiFiClient client);
-            void setActivationTime(unsigned long activationTime);
-            void setReady(bool ready);
-            void run();
-        private:
-            WiFiClient _client;
-            int _duration;
-            LongFSR longFSR;
-            Speaker _speaker;
-            Ear _ear1;
-            Ear _ear2;
-            unsigned long _activationTime = 0;
-            bool _ready = false;
-            
-    };
-    
-#endif
+#include <HugHandler.h>
+
+HugHandler::HugHandler(LongFSR longFSR, Ear ear1, Ear ear2){
+    _longFSR = longFSR;
+    _ear1 = ear1;
+    _ear2 = ear2;
+}
+
+WiFiClient HugHandler::getClient(){
+    return _client;
+}
+
+void HugHandler::setClient(WiFiClient client){
+    _client = client;
+}
+
+void HugHandler::setSpeaker(Speaker speaker){
+    _speaker = speaker;
+}
+
+void HugHandler::run(){
+    _longFSR.run();
+    if(_longFSR.isActive()){
+        getClient().write('h');
+        _speaker.hug();
+        _ear1.hug();
+        _ear2.hug();
+    }
+}

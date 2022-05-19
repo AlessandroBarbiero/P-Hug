@@ -7,7 +7,7 @@
     #include <WiFi101.h>
     class ShakeHandler {
         public:
-            ShakeHandler(Accelerometer accelerometer, Ear ear1, Ear ear2, Speaker speaker);
+            ShakeHandler(Ear ear1, Ear ear2);
             WiFiClient getClient();
             unsigned long getActivationTime();
             int getDuration();
@@ -15,6 +15,8 @@
             void setClient(WiFiClient client);
             void setActivationTime(unsigned long activationTime);
             void setReady(bool ready);
+            void setSpeaker(Speaker speaker);
+            void setAccelerometer(Accelerometer accelerometer);
             void run();
         private:
             WiFiClient _client;

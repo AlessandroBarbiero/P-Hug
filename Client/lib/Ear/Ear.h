@@ -10,6 +10,9 @@
             void action();
             void connect();
             void disconnect();
+            void caress();
+            void hug();
+            void shake();
         private:
             WiFiClient _client;
             int _pin;

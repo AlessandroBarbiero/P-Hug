@@ -16,16 +16,12 @@ void Ear::action(){
         _servo.write(_angle);                 
         delay(15);
     }
-
     delay(1000);
-
     for(_angle = 15; _angle>=1; _angle-=5){
         _servo.write(_angle);              
         delay(5); 
     }
-
     delay(1000);
-    
 }
 
 void Ear::connect(){
@@ -34,5 +30,17 @@ void Ear::connect(){
 
 void Ear::disconnect(){
     _servo.write(0);
+}
+
+void Ear::caress(){
+
+}
+
+void Ear::hug(){
+
+}
+
+void Ear::shake(){
+    
 }
   
