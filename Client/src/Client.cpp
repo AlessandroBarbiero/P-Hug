@@ -23,6 +23,7 @@ Accelerometer accelerometer;
 Speaker speaker;
 CaressHandler caressHandler(smallFSR1, smallFSR2, smallFSR3, ear1, ear2);
 HugHandler hugHandler(longFSR,ear1, ear2);
+ShakeHandler shakeHandler(2000,ear1,ear2);
 
 void setup() {
   Serial.begin(115200);
@@ -30,6 +31,8 @@ void setup() {
   speaker.setup();
   accelerometer.setup();
   caressHandler.setSpeaker(speaker);
+  shakeHandler.setSpeaker(speaker);
+  shakeHandler.setAccelerometer(accelerometer);
   //wifi.setup();
 }
 
@@ -39,8 +42,8 @@ void loop() {
 
   speaker.connect();
   while(1){
-    accelerometer.run();
-    accelerometer.print();    
+    shakeHandler.run(); 
+    //shakeHandler.getAccelerometer().print();   
     delay(500);
   }
 
@@ -64,6 +67,7 @@ void loop() {
     wifi.ping(client);
     caressHandler.run();
     hugHandler.run();
+    shakeHandler.run();
     delay(500);
   }
   
