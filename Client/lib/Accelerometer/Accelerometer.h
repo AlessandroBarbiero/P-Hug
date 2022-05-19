@@ -9,12 +9,27 @@
         public:
             Accelerometer();
             void setup();
+            float getTemperature();
+            float getAccelerationX();
+            float getAccelerationY();
+            float getAccelerationZ();
+            float getGyroX();
+            float getGyroY();
+            float getGyroZ();
             void setClient(WiFiClient client);
+            void run();
             void send();
             void print();
         private:
             WiFiClient _client;
             Adafruit_MPU6050 _mpu;
+            float _temp;
+            float _accX;
+            float _accY;
+            float _accZ;
+            float _gyroX;
+            float _gyroY;
+            float _gyroZ;
     };
     
 #endif
