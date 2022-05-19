@@ -3,9 +3,8 @@
 #include <WiFi101.h>
 
 
-SmallFSR::SmallFSR(WiFiClient client, int pin, int trigger, int duration) {
+SmallFSR::SmallFSR(int pin, int trigger, int duration) {
     _pin = pin;
-    _client = client;
     _trigger = trigger;
     _duration = duration;
 }
@@ -20,6 +19,10 @@ bool SmallFSR::isActive(){
 
 int SmallFSR::getDuration(){
     return _duration;
+}
+
+WiFiClient SmallFSR::getClient(){
+    return _client;
 }
 
 void SmallFSR::setActive(bool isActive){
@@ -37,13 +40,10 @@ void SmallFSR::setClient(WiFiClient client){
 void SmallFSR::send(){
     int value = analogRead(_pin);
     Serial.println(value);
-    if(value > _trigger){
-        Serial.println("Caress done");
-        _client.write('c');
-    }
+    getClient().write(value);
 }
 
-void SmallFSR::start(){
+void SmallFSR::run(){
     int value = analogRead(_pin);
     Serial.println(value);
     if(value > _trigger){

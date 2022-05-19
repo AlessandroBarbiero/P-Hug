@@ -6,15 +6,16 @@
     #include "Arduino.h"
     class SmallFSR {
         public:
-            SmallFSR(WiFiClient client, int pin, int trigger, int duration);
+            SmallFSR(int pin, int trigger, int duration);
             unsigned long getActivationTime();
             bool isActive();
             int getDuration();
+            WiFiClient getClient();
             void setActive(bool isActive);
             void setActivationTime();
             void setClient(WiFiClient client);
             void send();
-            void start();
+            void run();
         private:
             WiFiClient _client;
             int _pin;

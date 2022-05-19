@@ -11,9 +11,9 @@
 WiFiConnection wifi;
 WiFiClient client;
 LongFSR longFSR(NULL,1,500);
-SmallFSR smallFSR1(NULL,2,400,2000);
-SmallFSR smallFSR2(NULL,3,400,2000);
-SmallFSR smallFSR3(NULL,4,400,2000);
+SmallFSR smallFSR1(2,400,2000);
+SmallFSR smallFSR2(3,400,2000);
+SmallFSR smallFSR3(4,400,2000);
 Ear ear(9);
 Accelerometer accelerometer;
 Speaker speaker;
@@ -31,7 +31,7 @@ void loop() {
   delay(5000);
 
   while(1){
-    smallFSR1.start();
+    smallFSR1.run();
     delay(500);
   }
 
