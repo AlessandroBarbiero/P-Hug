@@ -8,7 +8,9 @@
             void setup();
             void connect();
             void disconnect();
-            void run();
+            void caress();
+            void hug();
+            void shake();
         private:
             DFRobotDFPlayerMini _myDFPlayer;
 

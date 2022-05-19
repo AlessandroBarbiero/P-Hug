@@ -7,7 +7,7 @@
     #include <WiFi101.h>
     class CaressHandler {
         public:
-            CaressHandler(SmallFSR smallFSR1, SmallFSR smallFSR2, SmallFSR smallFSR3, Ear ear1, Ear ear2, Speaker speaker);
+            CaressHandler(SmallFSR smallFSR1, SmallFSR smallFSR2, SmallFSR smallFSR3, Ear ear1, Ear ear2);
             WiFiClient getClient();
             unsigned long getActivationTime();
             int getDuration();
@@ -15,6 +15,7 @@
             void setClient(WiFiClient client);
             void setActivationTime(unsigned long activationTime);
             void setReady(bool ready);
+            void setSpeaker(Speaker speaker);
             void run();
         private:
             WiFiClient _client;

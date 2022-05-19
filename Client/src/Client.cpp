@@ -19,13 +19,14 @@ Ear ear1(9);
 Ear ear2(10);
 Accelerometer accelerometer;
 Speaker speaker;
-CaressHandler caressHandler(smallFSR1, smallFSR2, smallFSR3, ear1, ear2, speaker);
+CaressHandler caressHandler(smallFSR1, smallFSR2, smallFSR3, ear1, ear2);
 
 void setup() {
   Serial.begin(115200);
   delay(100);
   speaker.setup();
   accelerometer.setup();
+  caressHandler.setSpeaker(speaker);
   //wifi.setup();
 }
 
@@ -33,7 +34,7 @@ void loop() {
 
   delay(5000);
 
-
+  speaker.connect();
   while(1){
     caressHandler.run();
     delay(500);

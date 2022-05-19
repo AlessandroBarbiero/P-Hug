@@ -7,7 +7,7 @@
     #include <WiFi101.h>
     class HugHandler {
         public:
-            HugHandler(LongFSR, Ear ear1, Ear ear2, Speaker speaker);
+            HugHandler(LongFSR, Ear ear1, Ear ear2);
             WiFiClient getClient();
             unsigned long getActivationTime();
             int getDuration();
