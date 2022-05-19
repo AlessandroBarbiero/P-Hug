@@ -7,6 +7,7 @@
 #include <Ear.h>
 #include <Accelerometer.h>
 #include <Speaker.h>
+#include <CaressHandler.h>
 
 WiFiConnection wifi;
 WiFiClient client;
@@ -14,9 +15,11 @@ LongFSR longFSR(NULL,1,500);
 SmallFSR smallFSR1(2,400,2000);
 SmallFSR smallFSR2(3,400,2000);
 SmallFSR smallFSR3(4,400,2000);
-Ear ear(9);
+Ear ear1(9);
+Ear ear2(10);
 Accelerometer accelerometer;
 Speaker speaker;
+CaressHandler caressHandler(smallFSR1, smallFSR2, smallFSR3, ear1, ear2, speaker);
 
 void setup() {
   Serial.begin(115200);
@@ -30,8 +33,9 @@ void loop() {
 
   delay(5000);
 
+
   while(1){
-    smallFSR1.run();
+    caressHandler.run();
     delay(500);
   }
 
@@ -46,7 +50,7 @@ void loop() {
   Serial.println("Connected");
 
   speaker.connect();
-  ear.connect();
+  ear1.connect();
 
   longFSR.setClient(client);
   smallFSR1.setClient(client);
@@ -67,5 +71,5 @@ void loop() {
   Serial.println("closing connection");
 
   speaker.disconnect();
-  ear.disconnect();
+  ear1.disconnect();
 }

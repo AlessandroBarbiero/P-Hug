@@ -5,6 +5,7 @@
     #include <Servo.h>
     class Ear {
         public:
+            Ear();
             Ear(int pin);
             void action();
             void connect();

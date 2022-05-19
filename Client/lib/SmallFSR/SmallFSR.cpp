@@ -3,6 +3,9 @@
 #include <WiFi101.h>
 
 
+SmallFSR::SmallFSR() {
+}
+
 SmallFSR::SmallFSR(int pin, int trigger, int duration) {
     _pin = pin;
     _trigger = trigger;

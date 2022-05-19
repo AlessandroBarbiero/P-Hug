@@ -2,6 +2,9 @@
 #include <Ear.h>
 #include <WiFi101.h>
 
+Ear::Ear(){
+}
+
 Ear::Ear(int pin){
     _pin = pin;
     _servo.attach(pin);

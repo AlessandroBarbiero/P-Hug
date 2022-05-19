@@ -6,6 +6,7 @@
     #include "Arduino.h"
     class SmallFSR {
         public:
+            SmallFSR();
             SmallFSR(int pin, int trigger, int duration);
             unsigned long getActivationTime();
             bool isActive();
