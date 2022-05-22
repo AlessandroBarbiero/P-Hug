@@ -34,6 +34,7 @@ void setup() {
   shakeHandler.setSpeaker(speaker);
   shakeHandler.setAccelerometer(accelerometer);
   wifi.setup();
+  speaker.networkConnectionAttempt();
 }
 
 void loop() {

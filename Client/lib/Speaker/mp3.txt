@@ -1,0 +1,15 @@
+1   Attempting to connect to the network
+2   Attempting to connect to the jacket
+3   P-Hug is connected
+4   P-Hug is disconnected
+5   Caress
+6   Caress
+7   Hug
+8   Hug
+9   Hug
+10  Shake
+11  Shake
+12  Shake
+13  Shake
+14  Shake
+15  Shake

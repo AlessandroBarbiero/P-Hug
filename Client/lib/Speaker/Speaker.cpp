@@ -30,24 +30,32 @@ void Speaker::setup(){
 
 }
 
+void Speaker::networkConnectionAttempt(){
+    _myDFPlayer.play(1);
+}
+
+void Speaker::jacketConnectionAttempt(){
+    _myDFPlayer.play(2);
+}
+
 void Speaker::connect(){
-    _myDFPlayer.play(1); 
+    _myDFPlayer.play(3); 
 }
 
 void Speaker::disconnect(){
-    _myDFPlayer.play(2); 
+    _myDFPlayer.play(4); 
 }
 
 void Speaker::caress(){
-    _myDFPlayer.play(selectRandomAudio(0,1));
+    _myDFPlayer.play(selectRandomAudio(4,5));
 }
 
 void Speaker::hug(){
-    _myDFPlayer.play(selectRandomAudio(0,1));
+    _myDFPlayer.play(selectRandomAudio(6,8));
 }
 
 void Speaker::shake(){
-    _myDFPlayer.play(selectRandomAudio(0,1));
+    _myDFPlayer.play(selectRandomAudio(9,14));
 }
 
 int Speaker::selectRandomAudio(int startingIndex, int finishingIndex){
