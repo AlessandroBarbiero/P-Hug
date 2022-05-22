@@ -1,5 +1,13 @@
 #include <Speaker.h>
 
+
+// Indices starts from 0
+int selectRandomAudio(int startingIndex, int finishingIndex){
+    int n = finishingIndex - startingIndex;
+    int random = rand() % n;
+    return random + startingIndex + 1;  
+}
+
 Speaker::Speaker(){
     
 }
@@ -31,19 +39,18 @@ void Speaker::disconnect(){
 }
 
 void Speaker::caress(){
-    _myDFPlayer.play(3);
+    _myDFPlayer.play(selectRandomAudio(0,1));
 }
 
 void Speaker::hug(){
-    _myDFPlayer.play(3);
+    _myDFPlayer.play(selectRandomAudio(0,1));
 }
 
 void Speaker::shake(){
     _myDFPlayer.play(selectRandomAudio(0,1));
 }
 
-// Index starts from 0
-int selectRandomAudio(int startingIndex, int finishingIndex){
+int Speaker::selectRandomAudio(int startingIndex, int finishingIndex){
     int n = finishingIndex - startingIndex;
     int random = rand() % n;
     return random + startingIndex + 1;  

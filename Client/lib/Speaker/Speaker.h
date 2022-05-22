@@ -6,14 +6,17 @@
         public:
             Speaker();
             void setup();
+            void networkConnectionAttempt();
+            void jacketConnectionAttempt();
             void connect();
-            void disconnect();
             void caress();
             void hug();
             void shake();
+            void disconnect();
         private:
             DFRobotDFPlayerMini _myDFPlayer;
+            int selectRandomAudio(int startingIndex, int finishingIndex);
 
     };
-    
+
 #endif
