@@ -53,7 +53,7 @@ void CaressHandler::run(){
         setReady(true);
     }
     if(_smallFSR3.isActive() && getReady() && millis() < getActivationTime() + getDuration()){
-        getClient().write("C");
+        getClient().write("c");
         Serial.println(F("Caress Done"));
         _speaker.caress();
         _ear1.caress();

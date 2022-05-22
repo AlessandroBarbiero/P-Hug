@@ -33,19 +33,12 @@ void setup() {
   caressHandler.setSpeaker(speaker);
   shakeHandler.setSpeaker(speaker);
   shakeHandler.setAccelerometer(accelerometer);
-  //wifi.setup();
+  wifi.setup();
 }
 
 void loop() {
 
   delay(5000);
-
-  speaker.connect();
-  while(1){
-    shakeHandler.run(); 
-    //shakeHandler.getAccelerometer().print();   
-    delay(500);
-  }
 
   Serial.print("connecting to ");
   Serial.println(wifi.getHost());
@@ -62,11 +55,12 @@ void loop() {
 
   caressHandler.setClient(client);
   hugHandler.setClient(client);
+  shakeHandler.setClient(client);
 
   while(client.connected()){
     wifi.ping(client);
     caressHandler.run();
-    hugHandler.run();
+    //hugHandler.run();
     shakeHandler.run();
     delay(500);
   }
