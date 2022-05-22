@@ -39,5 +39,12 @@ void Speaker::hug(){
 }
 
 void Speaker::shake(){
-    _myDFPlayer.play(3);
+    _myDFPlayer.play(selectRandomAudio(0,1));
+}
+
+// Index starts from 0
+int selectRandomAudio(int startingIndex, int finishingIndex){
+    int n = finishingIndex - startingIndex;
+    int random = rand() % n;
+    return random + startingIndex + 1;  
 }
