@@ -29,12 +29,12 @@ bool WiFiConnection::checkMessage(){
 void WiFiConnection::setup(){
     int status = WL_IDLE_STATUS;
     WiFi.config(_ip, _gateway, _subnet);
-    Serial.print("Connecting to ");
+    Serial.print("D: Connecting to ");
     Serial.println(_ssid);
     
     // attempt to connect to Wifi network:
     while (status != WL_CONNECTED) {
-        Serial.print("Attempting to connect to network: ");
+        Serial.print("D: Attempting to connect to network: ");
         Serial.println(_ssid);
         status = WiFi.begin(_ssid, _password);
 
@@ -44,10 +44,10 @@ void WiFiConnection::setup(){
   
     _server.begin();
 
-    Serial.println("You're connected to the network and Server started");
-    Serial.println("----------------------------------------");
+    Serial.println("D: You're connected to the network and Server started");
+    Serial.println("D: ----------------------------------------");
     printData();
-    Serial.println("----------------------------------------");
+    Serial.println("D: ----------------------------------------");
 }
 
 char WiFiConnection::readMessage(){
@@ -56,19 +56,19 @@ char WiFiConnection::readMessage(){
 
 void WiFiConnection::stopClient(){
     _client.stop();
-    Serial.println("Client disconnected");
+    Serial.println("D: Client disconnected");
 }
 
 //---private
 void WiFiConnection::printData() {
-  Serial.println("Board Information:");
+  Serial.println("D: Board Information:");
   // print your board's IP address:
   IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
+  Serial.print("D: IP Address: ");
   Serial.println(ip);
 
   Serial.println();
-  Serial.println("Network Information:");
-  Serial.print("SSID: ");
+  Serial.println("D: Network Information:");
+  Serial.print("D: SSID: ");
   Serial.println(WiFi.SSID());
 }

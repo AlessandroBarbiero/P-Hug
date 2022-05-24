@@ -7,7 +7,8 @@
             void run();
             void start();
         private:
-            uint8_t _pin;
+            uint8_t _light;
+            // uint8_t _in1 = 12, _in2 = 13, _pwm = 15, _standby = 14;
             bool _hugging;
             unsigned long _lastHug;
             unsigned long _inflateCooldown;

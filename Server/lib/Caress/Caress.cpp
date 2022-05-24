@@ -15,7 +15,7 @@ Caress::Caress(uint8_t pins[], int size) {
 
 void Caress::start(int interval, int shift){
     if(millis() - _lastCaress > COOLDOWN){
-        Serial.println("Caress started at time: ");
+        Serial.println("D: Caress started at time: ");
         _lastCaress = millis();
         Serial.println(_lastCaress);
         
@@ -25,7 +25,7 @@ void Caress::start(int interval, int shift){
 
         return;
     }
-    Serial.println("Caress waiting for cooldown");
+    Serial.println("D: Caress waiting for cooldown");
 }
 
 void Caress::run(){

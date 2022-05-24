@@ -9,19 +9,27 @@ Hug::Hug(unsigned long inflateCooldown, unsigned long startCooldown) {
     _inflateCooldown = inflateCooldown;
     _startCooldown = startCooldown;
 
-    // Pin
-    _pin = 0; // LED. TODO: change to output pin for pump
-    pinMode(_pin, OUTPUT);
-    digitalWrite(_pin, HIGH);
+    _light = 0;
+    pinMode(_light, OUTPUT);
+    digitalWrite(_light, HIGH);
+
+/*     pinMode(_in1, OUTPUT);
+    pinMode(_in2, OUTPUT);
+    pinMode(_pwm, OUTPUT);
+    pinMode(_standby, OUTPUT); */
+
+/*     digitalWrite(_standby, LOW); */
+
+
 }
 
 void Hug::run() {
-    if(_hugging) {
-        digitalWrite(_pin, LOW);
-        if(millis() - _lastHug > _inflateCooldown) {
-            digitalWrite(_pin, HIGH);
-            _hugging = false;
-        }
+    if(_hugging && millis() - _lastHug > _inflateCooldown) {
+        digitalWrite(_light, HIGH);
+        Serial.println("R: h 0 ");
+        
+/*        digitalWrite(_standby, LOW); */
+        _hugging = false;
     }
 }
 
@@ -29,10 +37,16 @@ void Hug::start() {
     if(millis() - _lastHug > _startCooldown) {
         _lastHug = millis();
         _hugging = true;
+        digitalWrite(_light, LOW);
+        Serial.println("R: h 1 ");
+/*         digitalWrite(_standby, HIGH);
+        digitalWrite(_in1,HIGH);
+        digitalWrite(_in2,LOW);
+        analogWrite(_pwm,255); */
 
-        Serial.println("Hug started at time: ");
+        Serial.print("D: Hug started at time: ");
         Serial.println(_lastHug);
         return;
     }
-    Serial.println("Hug waiting for cooldown");
+    Serial.println("D: Hug waiting for cooldown");
 }
