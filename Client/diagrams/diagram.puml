@@ -169,4 +169,14 @@ class Ear {
             unsigned long _activationTime
     }
 
+    ShakeHandler *-- Speaker
+    ShakeHandler *-- Ear
+    ShakeHandler *-- Accelerometer
+    CaressHandler *-- Speaker
+    CaressHandler *-- Ear
+    CaressHandler *-- SmallFSR
+    HugHandler *-- Speaker
+    HugHandler *-- Ear
+    HugHandler *-- LongFSR
+
 @enduml
