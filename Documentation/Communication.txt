@@ -1,0 +1,13 @@
+Hug
+start hug - "R: h 1 "
+stop hug - "R: h 0 "
+
+Caress
+start caress (interval shift) - "R: c 255 255 "
+
+Heat/warm
+start heat - "R: w 1 "
+stop heat - "R: w 0 "
+
+
+
