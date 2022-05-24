@@ -3,7 +3,6 @@
 #include <Hug.h>
 
 Hug::Hug(unsigned long inflateCooldown, unsigned long startCooldown) {
-    // Variables
     _hugging = false;
     _lastHug = 0;
     _inflateCooldown = inflateCooldown;
@@ -16,9 +15,8 @@ Hug::Hug(unsigned long inflateCooldown, unsigned long startCooldown) {
 /*     pinMode(_in1, OUTPUT);
     pinMode(_in2, OUTPUT);
     pinMode(_pwm, OUTPUT);
-    pinMode(_standby, OUTPUT); */
-
-/*     digitalWrite(_standby, LOW); */
+    pinMode(_standby, OUTPUT);
+    digitalWrite(_standby, LOW); */
 
 
 }
@@ -28,7 +26,7 @@ void Hug::run() {
         digitalWrite(_light, HIGH);
         Serial.println("R: h 0 ");
         
-/*        digitalWrite(_standby, LOW); */
+//        digitalWrite(_standby, LOW);
         _hugging = false;
     }
 }
@@ -39,6 +37,7 @@ void Hug::start() {
         _hugging = true;
         digitalWrite(_light, LOW);
         Serial.println("R: h 1 ");
+        
 /*         digitalWrite(_standby, HIGH);
         digitalWrite(_in1,HIGH);
         digitalWrite(_in2,LOW);

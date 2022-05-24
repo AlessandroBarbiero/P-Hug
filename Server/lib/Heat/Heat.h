@@ -7,7 +7,6 @@
             void run();
             void start();
         private:
-            uint8_t _light;
             bool _heating;
             unsigned long _lastHeat;
             unsigned long _heatingTime;
