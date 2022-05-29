@@ -4,8 +4,8 @@
     class Heat  {
         public:
             Heat(unsigned long heatingTime, unsigned long cooldown);
-            void run();
-            void start();
+            void run(unsigned long time);
+            void start(unsigned long startingTime);
         private:
             bool _heating;
             unsigned long _lastHeat;
