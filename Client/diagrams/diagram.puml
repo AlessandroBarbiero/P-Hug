@@ -1,4 +1,5 @@
 @startuml
+
 class Accelerometer {
             Accelerometer()
             void setup()
@@ -169,12 +170,18 @@ class Ear {
             unsigned long _activationTime
     }
 
+    ShakeHandler -u-> "use" WiFiConnection
+    CaressHandler -u-> "use" WiFiConnection
+    HugHandler -u-> "use" WiFiConnection
+
     ShakeHandler *-- Speaker
     ShakeHandler *-- Ear
     ShakeHandler *-- Accelerometer
+
     CaressHandler *-- Speaker
     CaressHandler *-- Ear
     CaressHandler *-- SmallFSR
+
     HugHandler *-- Speaker
     HugHandler *-- Ear
     HugHandler *-- LongFSR

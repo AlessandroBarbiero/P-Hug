@@ -17,7 +17,7 @@ WiFiClient LongFSR::getClient(){
 }
 
 int LongFSR::getTrigger(){
-    int _trigger;
+    return _trigger;
 }
 
 bool LongFSR::isActive(){

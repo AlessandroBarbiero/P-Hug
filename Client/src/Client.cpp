@@ -13,12 +13,12 @@
 
 WiFiConnection wifi;
 WiFiClient client;
-LongFSR longFSR(NULL,1,500);
+LongFSR longFSR(NULL,1,400);
 SmallFSR smallFSR1(2,400,2000);
 SmallFSR smallFSR2(3,400,2000);
 SmallFSR smallFSR3(4,400,2000);
-Ear ear1(9);
-Ear ear2(10);
+Ear ear1(9,true);
+Ear ear2(8,false);
 Accelerometer accelerometer;
 Speaker speaker;
 CaressHandler caressHandler(smallFSR1, smallFSR2, smallFSR3, ear1, ear2);
@@ -32,14 +32,24 @@ void setup() {
   accelerometer.setup();
   caressHandler.setSpeaker(speaker);
   shakeHandler.setSpeaker(speaker);
+  hugHandler.setSpeaker(speaker);
   shakeHandler.setAccelerometer(accelerometer);
-  wifi.setup();
+  //wifi.setup();
   speaker.networkConnectionAttempt();
 }
 
 void loop() {
 
   delay(5000);
+
+  while(1){
+    caressHandler.run();
+    shakeHandler.run();
+    hugHandler.run();
+    delay(500);
+  }
+
+  
 
   Serial.print("connecting to ");
   Serial.println(wifi.getHost());
@@ -61,7 +71,7 @@ void loop() {
   while(client.connected()){
     wifi.ping(client);
     caressHandler.run();
-    //hugHandler.run();
+    hugHandler.run();
     shakeHandler.run();
     delay(500);
   }
