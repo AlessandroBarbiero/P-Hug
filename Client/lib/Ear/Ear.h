@@ -14,6 +14,8 @@
             void hug();
             void shake();
             void read();
+            void moveDownUpDown(int start,int stop, int time);
+            void moveUpDownUp(int start, int stop, int time);
         private:
             WiFiClient _client;
             int _pin;

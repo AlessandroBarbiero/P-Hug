@@ -18,31 +18,6 @@ Ear::Ear(int pin, bool isRight){
 }
 
 void Ear::action(){
-    
-    if(_isRight){
-        for(_angle = 0; _angle < 60; _angle += 1 ){
-            _servo.write(_angle);                 
-            delay(15);
-        }
-        delay(1000);
-        for(_angle = 60; _angle>=0; _angle-=1){
-            _servo.write(_angle);              
-            delay(15); 
-        }
-        delay(1000);
-    }
-    else{
-        for(_angle = 180; _angle > 100; _angle-= 1 ){
-            _servo.write(_angle);                 
-            delay(15);
-        }
-        delay(1000);
-        for(_angle = 100; _angle <= 180; _angle+=1){
-            _servo.write(_angle);              
-            delay(15); 
-        }
-        delay(1000);
-    }
 }
 
 void Ear::connect(){
@@ -68,7 +43,12 @@ void Ear::caress(){
 }
 
 void Ear::hug(){
-
+    if(_isRight){
+        moveDownUpDown(0,60,10);
+    }
+    else{
+       moveUpDownUp(60,0,10); 
+    }
 }
 
 void Ear::shake(){
@@ -78,4 +58,25 @@ void Ear::shake(){
 void Ear::read(){
     Serial.print(_servo.read());
 }
-  
+
+void Ear::moveDownUpDown(int start, int stop, int time){
+    for(_angle = start; _angle < stop; _angle += 1 ){
+            _servo.write(_angle);                 
+            delay(time);
+        }
+    for(_angle = stop; _angle>=start; _angle-=1){
+        _servo.write(_angle);              
+        delay(time); 
+    }
+}
+
+void Ear::moveUpDownUp(int start, int stop, int time){
+    for(_angle = start; _angle>=stop; _angle-=1){
+        _servo.write(_angle);              
+        delay(time); 
+    }
+    for(_angle = stop; _angle < start; _angle += 1 ){
+        _servo.write(_angle);                 
+        delay(time);
+    }
+}
