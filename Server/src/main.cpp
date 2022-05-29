@@ -1,4 +1,5 @@
 /**
+ * This is the code running in the jacket
  * Please enter your sensitive data in the include/Secrets.h to run the WiFi network
  *
  */
@@ -11,8 +12,8 @@
 #include <Heat.h>
 
 // debug checking
- #define DEBUG
- #define BUTTON A0
+// #define DEBUG
+// #define BUTTON A0
 
 #define RX 3
 #define TX 1
@@ -21,17 +22,17 @@
 #define INTERVAL 255
 #define SHIFT 180
 
-// Define Pins for the first wave
-#define A_VIB1 14
-#define A_VIB2 12
-#define A_VIB3 13
-#define A_TOT_VIB 3
+// Define Pins for the left caress
+#define L_VIB1 14
+#define L_VIB2 12
+#define L_VIB3 13
+#define L_TOT_VIB 3
 
-// Define pins for the second wave
-#define B_VIB1 2
-#define B_VIB2 5
-#define B_VIB3 4
-#define B_TOT_VIB 3
+// Define pins for the right caress
+#define R_VIB1 2
+#define R_VIB2 5
+#define R_VIB3 4
+#define R_TOT_VIB 3
 
 // other possible pins to use
 /*  #define VIB4 15
@@ -47,13 +48,13 @@
 #define HEATING_COOLDOWN 10000
 
 
-#define PING_TOLERANCE 5000
+#define PING_TOLERANCE 20000
 unsigned long lastPing;
 
-uint8_t pinsA[A_TOT_VIB] = {A_VIB1, A_VIB2, A_VIB3};
-Caress caressUnitA(pinsA, A_TOT_VIB);
-uint8_t pinsB[B_TOT_VIB] = {B_VIB1, B_VIB2, B_VIB3};
-Caress caressUnitB(pinsB, B_TOT_VIB);
+uint8_t pinsL[L_TOT_VIB] = {L_VIB1, L_VIB2, L_VIB3};
+Caress caressUnitLeft(pinsL, L_TOT_VIB);
+uint8_t pinsR[R_TOT_VIB] = {R_VIB1, R_VIB2, R_VIB3};
+Caress caressUnitRight(pinsR, R_TOT_VIB);
 
 Hug hugUnit(INFLATE_TIME, START_COOLDOWN);
 Heat heatUnit(HEATING_TIME, HEATING_COOLDOWN);
@@ -62,6 +63,7 @@ WiFiServer server(TCP_PORT);
 WiFiConnection wifi(SECRET_SSID, SECRET_PASS, server);
 
 char msg;
+unsigned long time;
 
 void setup() {
   Serial.begin(9600);
@@ -99,21 +101,26 @@ void loop() {
     
     while (wifi.isClientConnected()) {
       delay(3);
-      caressUnit.run();
-      hugUnit.run();
+      time = millis();
+      caressUnitLeft.run(time);
+      caressUnitRight.run(time);
+      hugUnit.run(time);
+      heatUnit.run(time);
 
       if (wifi.checkMessage()) {
         msg = wifi.readMessage();
 
         switch(msg){
           case 'p':
-            lastPing = millis();
+            lastPing = time;
             break;
           case 'c':
-            caressUnit.start(INTERVAL, SHIFT);
+            caressUnitLeft.start(time, INTERVAL, SHIFT);
+            caressUnitRight.start(time, INTERVAL, SHIFT);
             break;
           case 'h':
-            hugUnit.start(); 
+            hugUnit.start(time); 
+            heatUnit.start(time);
             break;
           default:
             Serial.print("D: Message: ");
@@ -121,7 +128,7 @@ void loop() {
         }
       }
       
-      // if client disconnect
+      // if client doesn't send ping for PING_TOLERANCE time, it is considered disconnected
       if (millis() - lastPing > PING_TOLERANCE) {
         wifi.stopClient();
       }

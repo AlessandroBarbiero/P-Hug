@@ -10,16 +10,16 @@ Heat::Heat(unsigned long heatingTime, unsigned long cooldown) {
 
 }
 
-void Heat::run() {
-    if(_heating && millis() - _lastHeat > _heatingTime) {
+void Heat::run(unsigned long time) {
+    if(_heating && time - _lastHeat > _heatingTime) {
         Serial.println("R: w 0 ");
         _heating = false;
     }
 }
 
-void Heat::start() {
-    if(millis() - _lastHeat > _cooldown) {
-        _lastHeat = millis();
+void Heat::start(unsigned long startingTime) {
+    if(startingTime - _lastHeat > _cooldown) {
+        _lastHeat = startingTime;
         _heating = true;
         Serial.println("R: w 1 ");
 
