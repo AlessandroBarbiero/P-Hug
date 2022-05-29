@@ -19,14 +19,13 @@ void HugHandler::setSpeaker(Speaker speaker){
 }
 
 void HugHandler::run(){
+    
     _longFSR.run();
     
     if(_longFSR.isActive()){
         getClient().write('h');
-        _speaker.hug();
         _ear1.hug();
         _ear2.hug();
-        Serial.print("AAA");
+        _speaker.hug();
     }
-    
 }

@@ -39,6 +39,7 @@ void ShakeHandler::setAccelerometer(Accelerometer accelerometer){
 }
 
 void ShakeHandler::run(){
+    /*
     _accelerometer.run();
     if(!_isShaking && (abs(_accelerometer.getGyroX()) > 2 || abs(_accelerometer.getGyroY()) > 2 || abs(_accelerometer.getGyroZ()) > 2)){
         _isShaking = true;
@@ -55,5 +56,15 @@ void ShakeHandler::run(){
         _speaker.shake();
         _isShaking = false;
     }
+    */
+   //_accelerometer.run();
+   if(abs(_accelerometer.getAccelerationX())>10||abs(_accelerometer.getAccelerationX())>10||abs(_accelerometer.getAccelerationX())>10){
+       getClient().write("s");
+        Serial.print("Shake");
+        _ear1.shake();
+        _ear2.shake();
+        _speaker.shake();
+        _isShaking = false;
+   }
 }
 

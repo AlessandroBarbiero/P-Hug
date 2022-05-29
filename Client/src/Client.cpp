@@ -42,6 +42,8 @@ void loop() {
 
   delay(5000);
 
+  int i = 0;
+
   while(1){
     caressHandler.run();
     shakeHandler.run();

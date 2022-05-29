@@ -45,9 +45,11 @@ void Ear::caress(){
 void Ear::hug(){
     if(_isRight){
         moveDownUpDown(0,60,10);
+        delay(500);
     }
     else{
        moveUpDownUp(60,0,10); 
+       delay(500);
     }
 }
 
