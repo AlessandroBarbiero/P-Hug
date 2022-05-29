@@ -11,12 +11,13 @@ Caress::Caress(uint8_t pins[], int size) {
     _step = 0;
     _caressing = false;
     _lastCaress = 0;
+    _numOfSteps = (_shift*(_numOfVib-1))+2*_interval;
 }
 
-void Caress::start(int interval, int shift){
-    if(millis() - _lastCaress > COOLDOWN){
-        Serial.println("D: Caress started at time: ");
-        _lastCaress = millis();
+void Caress::start(unsigned long startingTime, int interval, int shift){
+    if(startingTime - _lastCaress > COOLDOWN){
+        Serial.print("D: Caress started at time: ");
+        _lastCaress = startingTime;
         Serial.println(_lastCaress);
         
         _interval=interval;
@@ -28,7 +29,7 @@ void Caress::start(int interval, int shift){
     Serial.println("D: Caress waiting for cooldown");
 }
 
-void Caress::run(){
+void Caress::run(unsigned long time){
     if (_caressing){
         int relativeStep;
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
@@ -45,7 +46,7 @@ void Caress::run(){
         }
       
         _step++;
-        if(_step == (_shift*(_numOfVib-1))+2*_interval){
+        if(_step == _numOfSteps){
             _caressing = false;
             _step=0;
         }

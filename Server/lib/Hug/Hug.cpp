@@ -21,8 +21,8 @@ Hug::Hug(unsigned long inflateCooldown, unsigned long startCooldown) {
 
 }
 
-void Hug::run() {
-    if(_hugging && millis() - _lastHug > _inflateCooldown) {
+void Hug::run(unsigned long time) {
+    if(_hugging && time - _lastHug > _inflateCooldown) {
         digitalWrite(_light, HIGH);
         Serial.println("R: h 0 ");
         
@@ -31,9 +31,9 @@ void Hug::run() {
     }
 }
 
-void Hug::start() {
-    if(millis() - _lastHug > _startCooldown) {
-        _lastHug = millis();
+void Hug::start(unsigned long startingTime) {
+    if(startingTime - _lastHug > _startCooldown) {
+        _lastHug = startingTime;
         _hugging = true;
         digitalWrite(_light, LOW);
         Serial.println("R: h 1 ");

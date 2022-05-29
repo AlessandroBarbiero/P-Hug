@@ -4,8 +4,8 @@
     class Hug  {
         public:
             Hug(unsigned long inflateCooldown, unsigned long startCooldown);
-            void run();
-            void start();
+            void run(unsigned long time);
+            void start(unsigned long startingTime);
         private:
             uint8_t _light;
             // uint8_t _in1 = 12, _in2 = 13, _pwm = 15, _standby = 14;
