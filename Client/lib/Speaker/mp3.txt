@@ -1,15 +1,15 @@
-1   Attempting to connect to the network
-2   Attempting to connect to the jacket
-3   P-Hug is connected
-4   P-Hug is disconnected
-5   Caress
-6   Caress
-7   Hug
-8   Hug
-9   Hug
-10  Shake
-11  Shake
-12  Shake
-13  Shake
-14  Shake
-15  Shake
+1   P-Hug is connected
+2   P-Hug is disconnected
+3   Attempt to connect to the network
+4   attempt to connect to the jacket
+5   mmm
+6   aww
+7   kiss
+8   kiss
+9   eehheh kiss
+10  shout 
+11  shout
+12  shout
+13  shout
+14  shout
+15  shout

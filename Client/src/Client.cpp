@@ -38,7 +38,7 @@ void setup() {
   if(!debug){
     wifi.setup();
   }
-  speaker.networkConnectionAttempt();
+  //speaker.networkConnectionAttempt();
 }
 
 void loop() {
@@ -79,7 +79,7 @@ void loop() {
     caressHandler.run();
     hugHandler.run();
     shakeHandler.run();
-    delay(500);
+    delay(50);
   }
   
   Serial.println();

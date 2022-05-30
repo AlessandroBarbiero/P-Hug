@@ -26,7 +26,7 @@ void Ear::connect(){
         _servo.write(_angle);
     }
     else{
-        _angle = _maxAngle;
+        _angle = 180;
        _servo.write(_angle); 
     }
 }
