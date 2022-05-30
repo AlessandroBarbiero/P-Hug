@@ -41,6 +41,7 @@ void Ear::disconnect(){
 }
 
 void Ear::caress(){
+    _caressActivationTime = millis();
     _isCaressing = true;
 }
 
@@ -84,9 +85,11 @@ void Ear::idle(){
     else if (_isCaressing){
         if (_angle > 0) moveDown(1);
         else{
-            _isCaressing = false;
-            _angle = _maxAngle;
-            _servo.write(_angle);
+            if(millis() > _caressActivationTime + _caressDuration){
+                _angle = _maxAngle;
+                _servo.write(_maxAngle);
+                _isCaressing = false;
+            }
         } 
     }
 }

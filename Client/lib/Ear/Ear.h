@@ -30,7 +30,7 @@
             unsigned long _hugActivationTime = 0;
             unsigned long _hugDuration = 10000;
             unsigned long _caressActivationTime = 0;
-            unsigned long _caressDuration = 5000;
+            unsigned long _caressDuration = 10000;
             bool _isHugging = false;
             bool _isCaressing = false;
 
