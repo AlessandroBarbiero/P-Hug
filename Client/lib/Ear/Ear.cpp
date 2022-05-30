@@ -43,14 +43,12 @@ void Ear::caress(){
 }
 
 void Ear::hug(){
-    if(_isRight){
-        moveDownUpDown(0,60,10);
-        delay(500);
+    if(!_isHugging){
+        _isHugging = true;
+        _isGoingUp = true;
+        _hugActivationTime = millis();
     }
-    else{
-       moveUpDownUp(60,0,10); 
-       delay(500);
-    }
+    idle();
 }
 
 void Ear::shake(){
@@ -59,6 +57,35 @@ void Ear::shake(){
 
 void Ear::read(){
     Serial.print(_servo.read());
+}
+
+void Ear::idle(){
+    if(_isHugging && millis() < _hugActivationTime + _hugDuration){
+        if(_angle < 60 && _isGoingUp){
+            _isGoingUp = true;
+            moveUp(5);
+        }
+        else{
+            _isGoingUp = false;
+            if(_angle <= 0){
+                _isHugging = false;
+            }
+            else  moveDown(5);
+        }
+    }
+    else if (_hugActivationTime + millis() > _hugDuration){
+        _isHugging = false;
+    }
+}
+
+void Ear::moveUp(int delta){
+    _angle = _angle + delta;
+    _servo.write(_angle);
+}
+
+void Ear::moveDown(int delta){
+    _angle = _angle - delta;
+    _servo.write(_angle);
 }
 
 void Ear::moveDownUpDown(int start, int stop, int time){

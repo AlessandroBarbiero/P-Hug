@@ -48,7 +48,7 @@ void loop() {
     caressHandler.run();
     shakeHandler.run();
     hugHandler.run();
-    delay(500);
+    delay(50);
   }
 
   

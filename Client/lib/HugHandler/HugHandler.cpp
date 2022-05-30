@@ -26,6 +26,10 @@ void HugHandler::run(){
         getClient().write('h');
         _ear1.hug();
         _ear2.hug();
-        _speaker.hug();
+        //_speaker.hug();
+    }
+    else{
+        _ear1.idle();
+        _ear2.idle();
     }
 }
