@@ -5,42 +5,156 @@
 Ear::Ear(){
 }
 
-Ear::Ear(int pin){
+Ear::Ear(int pin, bool isRight){
     _pin = pin;
+    _isRight = isRight;
     _servo.attach(pin);
-    _servo.write(0);
+    if(isRight){
+        _servo.write(0);
+    }
+    else{
+        _servo.write(140);
+    }
 }
 
 void Ear::action(){
-    for(_angle = 0; _angle < 15; _angle += 1 ){
-        _servo.write(_angle);                 
-        delay(15);
-    }
-    delay(1000);
-    for(_angle = 15; _angle>=1; _angle-=5){
-        _servo.write(_angle);              
-        delay(5); 
-    }
-    delay(1000);
 }
 
 void Ear::connect(){
-    _servo.write(40);
+    if(_isRight){
+        _angle = _maxAngle;
+        _servo.write(_angle);
+    }
+    else{
+        _angle = 90;
+       _servo.write(_angle); 
+    }
 }
 
 void Ear::disconnect(){
-    _servo.write(0);
+    if(_isRight){
+        _servo.write(0);
+    }
+    else{
+       _servo.write(140); 
+    }
 }
 
 void Ear::caress(){
-
+    _caressActivationTime = millis();
+    _isCaressing = true;
 }
 
 void Ear::hug(){
-
+    if(!_isHugging){
+        _isHugging = true;
+        _isGoingUp = false;
+        _hugActivationTime = millis();
+    }
+    idle();
 }
 
 void Ear::shake(){
     
 }
-  
+
+void Ear::read(){
+    Serial.print(_servo.read());
+}
+
+void Ear::idle(){
+    if(_isRight){
+        if(_isHugging){
+            if(millis() < _hugActivationTime + _hugDuration){
+                if(_angle > 0 && !_isGoingUp){
+                    moveDown(5);
+                }
+                else if ( _angle <= 0 && !_isGoingUp){
+                    _isGoingUp = true;
+                }
+                else if ( _angle < _maxAngle && _isGoingUp){
+                    moveUp(5);
+                }
+                else if (_angle >= _maxAngle){
+                    _isHugging = false;
+                }
+            }
+            else {
+                _isHugging = false;
+            }
+        }
+        else if (_isCaressing){
+            if (_angle > 0) moveDown(1);
+            else{
+                if(millis() > _caressActivationTime + _caressDuration){
+                    _angle = _maxAngle;
+                    _servo.write(_maxAngle);
+                    _isCaressing = false;
+                }
+            } 
+        }
+    }
+    else{
+        if(_isHugging){
+        if(millis() < _hugActivationTime + _hugDuration){
+            if(_angle > 90 && !_isGoingUp){
+                moveDown(5);
+            }
+            else if ( _angle <= 90 && !_isGoingUp){
+                _isGoingUp = true;
+            }
+            else if ( _angle < 140 && _isGoingUp){
+                moveUp(5);
+            }
+            else if (_angle >= 140){
+                _isHugging = false;
+            }
+        }
+        else {
+            _isHugging = false;
+        }
+    }
+    else if (_isCaressing){
+        if (_angle < 140) moveUp(1);
+        else{
+            if(millis() > _caressActivationTime + _caressDuration){
+                _angle = 90;
+                _servo.write(90);
+                _isCaressing = false;
+            }
+        } 
+    }
+    }
+}
+
+void Ear::moveUp(int delta){
+    _angle = _angle + delta;
+    _servo.write(_angle);
+}
+
+void Ear::moveDown(int delta){
+    _angle = _angle - delta;
+    _servo.write(_angle);
+}
+
+void Ear::moveDownUpDown(int start, int stop, int time){
+    for(_angle = start; _angle < stop; _angle += 1 ){
+            _servo.write(_angle);                 
+            delay(time);
+        }
+    for(_angle = stop; _angle>=start; _angle-=1){
+        _servo.write(_angle);              
+        delay(time); 
+    }
+}
+
+void Ear::moveUpDownUp(int start, int stop, int time){
+    for(_angle = start; _angle>=stop; _angle-=1){
+        _servo.write(_angle);              
+        delay(time); 
+    }
+    for(_angle = stop; _angle < start; _angle += 1 ){
+        _servo.write(_angle);                 
+        delay(time);
+    }
+}

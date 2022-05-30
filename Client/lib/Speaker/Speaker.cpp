@@ -26,40 +26,44 @@ void Speaker::setup(){
         }
     }
     Serial.println(F("Player online."));
-    _myDFPlayer.volume(25);  //Set volume value. From 0 to 30
+    _myDFPlayer.volume(20);  //Set volume value. From 0 to 30
 
 }
 
 void Speaker::networkConnectionAttempt(){
-    _myDFPlayer.play(1);
+    _myDFPlayer.play(3);
+    delay(1000);
 }
 
 void Speaker::jacketConnectionAttempt(){
-    _myDFPlayer.play(2);
+    _myDFPlayer.play(4);
+    delay(1000);
 }
 
 void Speaker::connect(){
-    _myDFPlayer.play(3); 
+    _myDFPlayer.play(1); 
+    delay(1000);
 }
 
 void Speaker::disconnect(){
-    _myDFPlayer.play(4); 
+    _myDFPlayer.play(2); 
+    delay(1000);
 }
 
 void Speaker::caress(){
-    _myDFPlayer.play(selectRandomAudio(4,5));
+    _myDFPlayer.play(selectRandomAudio(5,6));
 }
 
 void Speaker::hug(){
-    _myDFPlayer.play(selectRandomAudio(6,8));
+   _myDFPlayer.play(selectRandomAudio(7,9));
 }
 
 void Speaker::shake(){
-    _myDFPlayer.play(selectRandomAudio(9,14));
+    _myDFPlayer.play(10);
 }
 
 int Speaker::selectRandomAudio(int startingIndex, int finishingIndex){
-    int n = finishingIndex - startingIndex;
+    int n = finishingIndex - startingIndex + 1;
     int random = rand() % n;
-    return random + startingIndex + 1;  
+    return random + startingIndex;  
 }

@@ -11,14 +11,15 @@
 #include <HugHandler.h>
 #include <ShakeHandler.h>
 
+bool debug = false;
 WiFiConnection wifi;
 WiFiClient client;
-LongFSR longFSR(NULL,1,500);
+LongFSR longFSR(NULL,1,400);
 SmallFSR smallFSR1(2,400,2000);
 SmallFSR smallFSR2(3,400,2000);
 SmallFSR smallFSR3(4,400,2000);
-Ear ear1(9);
-Ear ear2(10);
+Ear ear1(9,true);
+Ear ear2(8,false);
 Accelerometer accelerometer;
 Speaker speaker;
 CaressHandler caressHandler(smallFSR1, smallFSR2, smallFSR3, ear1, ear2);
@@ -32,13 +33,29 @@ void setup() {
   accelerometer.setup();
   caressHandler.setSpeaker(speaker);
   shakeHandler.setSpeaker(speaker);
+  hugHandler.setSpeaker(speaker);
   shakeHandler.setAccelerometer(accelerometer);
-  wifi.setup();
   speaker.networkConnectionAttempt();
+  if(!debug){
+    wifi.setup();
+  }
 }
 
 void loop() {
 
+  if(debug){
+    ear1.connect();
+    ear2.connect();
+
+  while(1){
+    caressHandler.run();
+    shakeHandler.run();
+    hugHandler.run();
+    delay(50);
+    }
+  }
+
+  speaker.jacketConnectionAttempt();
   delay(5000);
 
   Serial.print("connecting to ");
@@ -61,9 +78,9 @@ void loop() {
   while(client.connected()){
     wifi.ping(client);
     caressHandler.run();
-    //hugHandler.run();
+    hugHandler.run();
     shakeHandler.run();
-    delay(500);
+    delay(50);
   }
   
   Serial.println();
