@@ -61,5 +61,7 @@ void CaressHandler::run(){
         setReady(false);
         _speaker.caress();
     }
+    _ear1.idle();
+    _ear2.idle();
 }
 

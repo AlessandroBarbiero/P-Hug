@@ -41,8 +41,7 @@ void Ear::disconnect(){
 }
 
 void Ear::caress(){
-    _servo.write(50);
-
+    _isCaressing = true;
 }
 
 void Ear::hug(){
@@ -63,26 +62,32 @@ void Ear::read(){
 }
 
 void Ear::idle(){
-    if(_isHugging && millis() < _hugActivationTime + _hugDuration){
-        if(_angle > 0 && !_isGoingUp){
-            Serial.print("HERE");
-            moveDown(5);
+    if(_isHugging){
+        if(millis() < _hugActivationTime + _hugDuration){
+            if(_angle > 0 && !_isGoingUp){
+                moveDown(5);
+            }
+            else if ( _angle <= 0 && !_isGoingUp){
+                _isGoingUp = true;
+            }
+            else if ( _angle < _maxAngle && _isGoingUp){
+                moveUp(5);
+            }
+            else if (_angle >= _maxAngle){
+                _isHugging = false;
+            }
         }
-        else if ( _angle <= 0 && !_isGoingUp){
-            _isGoingUp = true;
-            Serial.print("ssssssssssssssRE");
-        }
-        else if ( _angle < _maxAngle && _isGoingUp){
-            moveUp(5);
-            Serial.print("HsssasdqdfwdERE");
-        }
-        else if (_angle >= _maxAngle){
+        else {
             _isHugging = false;
-            Serial.print("adsdfasdddasdsdasdasdasdadas");
         }
     }
-    else {
-        _isHugging = false;
+    else if (_isCaressing){
+        if (_angle > 0) moveDown(1);
+        else{
+            _isCaressing = false;
+            _angle = _maxAngle;
+            _servo.write(_angle);
+        } 
     }
 }
 
