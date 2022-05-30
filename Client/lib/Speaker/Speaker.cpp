@@ -26,7 +26,7 @@ void Speaker::setup(){
         }
     }
     Serial.println(F("Player online."));
-    _myDFPlayer.volume(10);  //Set volume value. From 0 to 30
+    _myDFPlayer.volume(20);  //Set volume value. From 0 to 30
 
 }
 
@@ -48,17 +48,14 @@ void Speaker::disconnect(){
 
 void Speaker::caress(){
     _myDFPlayer.play(selectRandomAudio(4,5));
-    delay(1000);
 }
 
 void Speaker::hug(){
-   _myDFPlayer.play(selectRandomAudio(4,5)); 
-   delay(1000);
+   _myDFPlayer.play(selectRandomAudio(4,5));
 }
 
 void Speaker::shake(){
     _myDFPlayer.play(selectRandomAudio(9,14));
-    delay(1000);
 }
 
 int Speaker::selectRandomAudio(int startingIndex, int finishingIndex){
