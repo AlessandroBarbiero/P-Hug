@@ -12,7 +12,7 @@
 #include <Heat.h>
 
 // debug checking
-// #define DEBUG
+ #define DEBUG
 // #define BUTTON A0
 
 #define RX 3
@@ -40,12 +40,11 @@
  */
 
 // %%%%%% HUG PARAMETERS %%%%%%
-#define INFLATE_TIME 5000
-#define START_COOLDOWN 10000
+#define INFLATE_TIME 12000
+#define START_COOLDOWN 5000
 
 // %%%%%% HEAT PARAMETERS %%%%%%
-#define HEATING_TIME 5000
-#define HEATING_COOLDOWN 10000
+#define HEATING_DUTY_CYCLE (float)3.0/4
 
 
 #define PING_TOLERANCE 20000
@@ -57,20 +56,28 @@ uint8_t pinsR[R_TOT_VIB] = {R_VIB1, R_VIB2, R_VIB3};
 Caress caressUnitRight(pinsR, R_TOT_VIB);
 
 Hug hugUnit(INFLATE_TIME, START_COOLDOWN);
-Heat heatUnit(HEATING_TIME, HEATING_COOLDOWN);
+Heat heatUnit(HEATING_DUTY_CYCLE);
 
 WiFiServer server(TCP_PORT);
 WiFiConnection wifi(SECRET_SSID, SECRET_PASS, server);
 
 char msg;
-unsigned long time;
+unsigned long exTime;
+#ifdef DEBUG
+  unsigned long startTime;
+  bool done1, done2, done3;
+#endif
 
 void setup() {
   Serial.begin(9600);
   while (!Serial);
+  heatUnit.start(millis());
 
   #ifdef DEBUG
-  pinMode(BUTTON, INPUT);
+    startTime = millis();
+    done1=false;
+    done2=false;
+    done3=false;
   #else
   wifi.setup();
   #endif
@@ -79,18 +86,24 @@ void setup() {
 void loop() {
 
   #ifdef DEBUG
-  caressUnitA.run();
-  caressUnitB.run();
-  delay(5);
-  /* if (analogRead(BUTTON) > 500) {
-    Serial.println("D: button pressed");
-    caressUnit.start(INTERVAL, SHIFT);
-  } */
+  exTime = millis();
+  caressUnitLeft.run(exTime);
+  caressUnitRight.run(exTime);
+  hugUnit.run(exTime);
+  heatUnit.run(exTime);
+  delay(3);
 
-  //try Start the caress every 5 seconds or more (it is correct if it is not executed at every 5 seconds -> maybe the millis is not called exactly)
-  if(millis()%5000 == 0){
-    caressUnitA.start(INTERVAL, SHIFT);
-    caressUnitB.start(INTERVAL, SHIFT);
+  if(!done1 && exTime - startTime > 8000){
+    hugUnit.start(exTime);
+    done1 = true;
+  }
+  if(!done2 && exTime - startTime > 18000){
+    caressUnitLeft.start(exTime, INTERVAL, SHIFT);
+    done2 = true;
+  }
+  if(!done3 && exTime - startTime > 22000){
+    caressUnitRight.start(exTime, INTERVAL, SHIFT);
+    done3 = true;
   }
 
   #else
@@ -101,26 +114,25 @@ void loop() {
     
     while (wifi.isClientConnected()) {
       delay(3);
-      time = millis();
-      caressUnitLeft.run(time);
-      caressUnitRight.run(time);
-      hugUnit.run(time);
-      heatUnit.run(time);
+      exTime = millis();
+      caressUnitLeft.run(exTime);
+      caressUnitRight.run(exTime);
+      hugUnit.run(exTime);
+      heatUnit.run(exTime);
 
       if (wifi.checkMessage()) {
         msg = wifi.readMessage();
 
         switch(msg){
           case 'p':
-            lastPing = time;
+            lastPing = exTime;
             break;
           case 'c':
-            caressUnitLeft.start(time, INTERVAL, SHIFT);
-            caressUnitRight.start(time, INTERVAL, SHIFT);
+            caressUnitLeft.start(exTime, INTERVAL, SHIFT);
+            caressUnitRight.start(exTime, INTERVAL, SHIFT);
             break;
           case 'h':
-            hugUnit.start(time); 
-            heatUnit.start(time);
+            hugUnit.start(exTime); 
             break;
           default:
             Serial.print("D: Message: ");

@@ -1,12 +1,15 @@
-//Heat.cpp
+// The heat is made heating at constant rate
 #include <Arduino.h>
 #include <Heat.h>
+// The time of a cycle is constant at 5 seconds -> the heat is regulated changing the duty cycle
+#define CYCLE 10000
 
-Heat::Heat(unsigned long heatingTime, unsigned long cooldown) {
+// The heating rate is made passing the percentage of activity as the duty-cycle
+Heat::Heat(float dutyCycle) {
     _heating = false;
     _lastHeat = 0;
-    _heatingTime = heatingTime;
-    _cooldown = cooldown;
+    _heatingTime = CYCLE * dutyCycle;
+    _cooldown = CYCLE;
 
 }
 
@@ -15,6 +18,8 @@ void Heat::run(unsigned long time) {
         Serial.println("R: w 0 ");
         _heating = false;
     }
+    else if(!_heating && time - _lastHeat > _cooldown)
+        start(time);
 }
 
 void Heat::start(unsigned long startingTime) {

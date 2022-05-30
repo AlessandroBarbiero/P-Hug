@@ -3,7 +3,7 @@
     #include "Arduino.h"
     class Heat  {
         public:
-            Heat(unsigned long heatingTime, unsigned long cooldown);
+            Heat(float dutyCycle);
             void run(unsigned long time);
             void start(unsigned long startingTime);
         private:
