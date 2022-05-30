@@ -11,6 +11,7 @@
 #include <HugHandler.h>
 #include <ShakeHandler.h>
 
+bool debug = true;
 WiFiConnection wifi;
 WiFiClient client;
 LongFSR longFSR(NULL,1,400);
@@ -34,27 +35,27 @@ void setup() {
   shakeHandler.setSpeaker(speaker);
   hugHandler.setSpeaker(speaker);
   shakeHandler.setAccelerometer(accelerometer);
-  //wifi.setup();
+  if(!debug){
+    wifi.setup();
+  }
   speaker.networkConnectionAttempt();
 }
 
 void loop() {
 
-  delay(5000);
-
-  int i = 0;
-
-  ear1.connect();
-  ear2.connect();
+  if(debug){
+    ear1.connect();
+    ear2.connect();
 
   while(1){
     caressHandler.run();
     shakeHandler.run();
     hugHandler.run();
     delay(50);
+    }
   }
 
-  
+  delay(5000);
 
   Serial.print("connecting to ");
   Serial.println(wifi.getHost());
