@@ -13,7 +13,7 @@ Ear::Ear(int pin, bool isRight){
         _servo.write(0);
     }
     else{
-        _servo.write(180);
+        _servo.write(140);
     }
 }
 
@@ -26,7 +26,7 @@ void Ear::connect(){
         _servo.write(_angle);
     }
     else{
-        _angle = 180;
+        _angle = 90;
        _servo.write(_angle); 
     }
 }
@@ -36,7 +36,7 @@ void Ear::disconnect(){
         _servo.write(0);
     }
     else{
-       _servo.write(0); 
+       _servo.write(140); 
     }
 }
 
@@ -63,18 +63,50 @@ void Ear::read(){
 }
 
 void Ear::idle(){
-    if(_isHugging){
+    if(_isRight){
+        if(_isHugging){
+            if(millis() < _hugActivationTime + _hugDuration){
+                if(_angle > 0 && !_isGoingUp){
+                    moveDown(5);
+                }
+                else if ( _angle <= 0 && !_isGoingUp){
+                    _isGoingUp = true;
+                }
+                else if ( _angle < _maxAngle && _isGoingUp){
+                    moveUp(5);
+                }
+                else if (_angle >= _maxAngle){
+                    _isHugging = false;
+                }
+            }
+            else {
+                _isHugging = false;
+            }
+        }
+        else if (_isCaressing){
+            if (_angle > 0) moveDown(1);
+            else{
+                if(millis() > _caressActivationTime + _caressDuration){
+                    _angle = _maxAngle;
+                    _servo.write(_maxAngle);
+                    _isCaressing = false;
+                }
+            } 
+        }
+    }
+    else{
+        if(_isHugging){
         if(millis() < _hugActivationTime + _hugDuration){
-            if(_angle > 0 && !_isGoingUp){
+            if(_angle > 90 && !_isGoingUp){
                 moveDown(5);
             }
-            else if ( _angle <= 0 && !_isGoingUp){
+            else if ( _angle <= 90 && !_isGoingUp){
                 _isGoingUp = true;
             }
-            else if ( _angle < _maxAngle && _isGoingUp){
+            else if ( _angle < 140 && _isGoingUp){
                 moveUp(5);
             }
-            else if (_angle >= _maxAngle){
+            else if (_angle >= 140){
                 _isHugging = false;
             }
         }
@@ -83,14 +115,15 @@ void Ear::idle(){
         }
     }
     else if (_isCaressing){
-        if (_angle > 0) moveDown(1);
+        if (_angle < 140) moveUp(1);
         else{
             if(millis() > _caressActivationTime + _caressDuration){
-                _angle = _maxAngle;
-                _servo.write(_maxAngle);
+                _angle = 90;
+                _servo.write(90);
                 _isCaressing = false;
             }
         } 
+    }
     }
 }
 
