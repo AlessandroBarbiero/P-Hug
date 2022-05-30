@@ -23,7 +23,8 @@
             WiFiClient _client;
             int _pin;
             Servo _servo;
-            int _angle = 0;
+            int _maxAngle = 50;
+            int _angle = 40;
             bool _isRight;
             bool _isGoingUp;
             unsigned long _hugActivationTime = 0;

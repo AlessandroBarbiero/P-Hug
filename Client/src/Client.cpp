@@ -44,6 +44,9 @@ void loop() {
 
   int i = 0;
 
+  ear1.connect();
+  ear2.connect();
+
   while(1){
     caressHandler.run();
     shakeHandler.run();
