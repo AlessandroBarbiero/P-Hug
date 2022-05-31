@@ -1,0 +1,66 @@
+@startuml server
+
+class Caress {    
+    .. public ..
+        Caress(uint8_t pins[], int size)
+        void run(unsigned long time)
+        void start(unsigned long startingTime, int interval, int shift)
+    .. private ..
+        uint8_t _pins[MAX_PINS]
+        int _step
+        int _interval
+        int _shift
+        int _numOfVib
+        int _numOfSteps
+        bool _caressing
+        unsigned long _lastCaress       
+}
+
+class Hug {    
+    .. public ..
+        Hug(unsigned long inflateCooldown, unsigned long startCooldown)
+        void run(unsigned long time)
+        void start(unsigned long startingTime)
+    .. private ..
+        uint8_t _light
+        bool _hugging
+        unsigned long _lastHug
+        unsigned long _inflateCooldown
+        unsigned long _startCooldown   
+}
+
+class Heat {    
+    .. public ..
+        Heat(float dutyCycle)
+        void run(unsigned long time)
+        void start(unsigned long startingTime)
+    .. private ..
+        bool _heating
+        unsigned long _lastHeat
+        unsigned long _heatingTime
+        unsigned long _cooldown
+}
+
+class WiFiConnection {
+    .. public ..
+        WiFiConnection(String ssid, String password, WiFiServer server)
+        int getPort()
+        bool searchClient()
+        void setup()
+        bool isClientConnected()
+        bool checkMessage()
+        char readMessage()
+        void stopClient()
+    .. private ..
+        void printData()
+        String _ssid
+        String _password
+        int _port
+        IPAddress _ip = *(new IPAddress(192, 168, 43, 179))
+        IPAddress _gateway = *(new IPAddress(192, 168, 43, 1))
+        IPAddress _subnet = *(new IPAddress(255, 255, 255, 0))
+        WiFiServer _server = 0
+        WiFiClient _client
+}
+
+@enduml
