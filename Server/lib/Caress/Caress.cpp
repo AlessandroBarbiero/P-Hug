@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Caress.h>
-#define COOLDOWN 10000
+#define COOLDOWN 5000
+#define SHAKE_DURATION 5000
 
 Caress::Caress(uint8_t pins[], int size) {
     _numOfVib = size;
@@ -23,13 +24,33 @@ void Caress::start(unsigned long startingTime, int interval, int shift){
         _interval=interval;
         _shift = shift;
         _caressing = true;
+        _step = 0;
 
         return;
     }
     Serial.println("D: Caress waiting for cooldown");
 }
 
+void Caress::shake(unsigned long startingTime){
+    if(startingTime - _lastShake > COOLDOWN){
+        Serial.print("D: Shake started at time: ");
+        _lastCaress = startingTime;
+        for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
+            analogWrite(_pins[pinIndex], 255);
+            _shaking = true;
+            _lastShake = startingTime;
+        }
+    }
+}
+
 void Caress::run(unsigned long time){
+    if(_shaking && time - _lastShake > SHAKE_DURATION) {
+        for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
+            analogWrite(_pins[pinIndex], 0);
+            _shaking = false;
+        }
+
+    }
     if (_caressing){
         int relativeStep;
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){

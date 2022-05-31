@@ -1,7 +1,7 @@
 // The heat is made heating at constant rate
 #include <Arduino.h>
 #include <Heat.h>
-// The time of a cycle is constant at 5 seconds -> the heat is regulated changing the duty cycle
+// The time of a cycle is constant at 22 seconds -> the heat is regulated changing the duty cycle
 #define CYCLE 22000
 
 // The heating rate is made passing the percentage of activity as the duty-cycle

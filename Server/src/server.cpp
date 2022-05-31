@@ -20,22 +20,22 @@
 
 // %%%%%% CARESS PARAMETERS %%%%%%
 #define INTERVAL 255
-#define SHIFT 180
+#define SHIFT 120
 
 // Define Pins for the left caress
-#define L_VIB1 14
+#define L_VIB1 13
 #define L_VIB2 12
-#define L_VIB3 13
+#define L_VIB3 14
 #define L_TOT_VIB 3
 
 // Define pins for the right caress
-#define R_VIB1 2
+#define R_VIB1 15
 #define R_VIB2 5
 #define R_VIB3 4
 #define R_TOT_VIB 3
 
 // other possible pins to use
-/*  #define VIB4 15
+/*
     #define VIB6 16     
  */
 
@@ -93,7 +93,7 @@ void loop() {
   heatUnit.run(exTime);
   delay(3);
 
-  if(!done1 && exTime - startTime > 8000){
+/*   if(!done1 && exTime - startTime > 8000){
     hugUnit.start(exTime);
     done1 = true;
   }
@@ -105,6 +105,15 @@ void loop() {
     caressUnitRight.start(exTime, INTERVAL, SHIFT);
     done3 = true;
   }
+ */
+  if(exTime - startTime > 5100){
+    // caressUnitLeft.shake(exTime);
+    // caressUnitRight.shake(exTime);
+     caressUnitLeft.start(exTime, INTERVAL, SHIFT);
+    // caressUnitRight.start(exTime, INTERVAL, SHIFT);
+    startTime = exTime;
+  }
+
 
   #else
 
