@@ -44,7 +44,7 @@
 #define START_COOLDOWN 5000
 
 // %%%%%% HEAT PARAMETERS %%%%%%
-#define HEATING_DUTY_CYCLE (float)3.0/4
+#define HEATING_DUTY_CYCLE (float)0.90
 
 
 #define PING_TOLERANCE 20000
