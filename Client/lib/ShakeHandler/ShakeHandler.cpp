@@ -39,7 +39,7 @@ void ShakeHandler::setAccelerometer(Accelerometer accelerometer){
 }
 
 void ShakeHandler::run(){
-    //_accelerometer.run();
+    _accelerometer.run();
     if(!_isShaking && (abs(_accelerometer.getGyroX()) > 2 || abs(_accelerometer.getGyroY()) > 2 || abs(_accelerometer.getGyroZ()) > 2)){
         _isShaking = true;
         setActivationTime();

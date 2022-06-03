@@ -1,19 +1,17 @@
 #include <Accelerometer.h>
 
+Accelerometer::Accelerometer(){
 
-Accelerometer::Accelerometer() {
+}
+
+Accelerometer::Accelerometer(MPU6050 *mpu6050) {
+  _mpu6050 = mpu6050;
 }
 
 void Accelerometer::setup(){
-  while (!_mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
-    delay(1000);
-  }
-  Serial.println("MPU6050 chip configured");
-  _mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
-  _mpu.setGyroRange(MPU6050_RANGE_250_DEG);
-  _mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
-  delay(100);
+  Wire.begin();
+  (*_mpu6050).begin();
+  (*_mpu6050).calcGyroOffsets(true);
 };
 
 float Accelerometer::getTemperature(){
@@ -49,15 +47,15 @@ void Accelerometer::setClient(WiFiClient client){
 }
 
 void Accelerometer::run(){
-  sensors_event_t a, g, temp;
-  _mpu.getEvent(&a, &g, &temp);
-  _temp = temp.temperature;
-  _accX = a.acceleration.x;
-  _accY = a.acceleration.y;
-  _accZ = a.acceleration.z;
-  _gyroX = g.gyro.x;
-  _gyroY = g.gyro.y;
-  _gyroZ = g.gyro.z;
+  (*_mpu6050).update();
+  _temp = (*_mpu6050).getTemp();
+  _accX = (*_mpu6050).getAccX();
+  _accY = (*_mpu6050).getAccY();
+  _accZ = (*_mpu6050).getAccZ();
+  _gyroX = (*_mpu6050).getGyroX();
+  _gyroY = (*_mpu6050).getGyroY();
+  _gyroZ = (*_mpu6050).getGyroZ();
+  print();
 }
 
 void Accelerometer::send(){
@@ -65,6 +63,7 @@ void Accelerometer::send(){
 }
 
 void Accelerometer::print(){
+  Serial.println("=======================================================");
   Serial.print("Temperature:");
   Serial.print(getTemperature());
   Serial.print("\tx-acceleration:");
@@ -79,5 +78,5 @@ void Accelerometer::print(){
   Serial.print(getGyroY());
   Serial.print("\tz-gyro:");
   Serial.println(getGyroZ());
-  
+   Serial.println("=======================================================");  
 }
