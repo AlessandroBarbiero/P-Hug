@@ -11,15 +11,15 @@
 #include <HugHandler.h>
 #include <ShakeHandler.h>
 
-bool debug = false;
+bool debug = true;
 WiFiConnection wifi;
 WiFiClient client;
 LongFSR longFSR(NULL,1,400);
 SmallFSR smallFSR1(2,400,2000);
 SmallFSR smallFSR2(3,400,2000);
 SmallFSR smallFSR3(4,400,2000);
-Ear ear1(9,true);
-Ear ear2(8,false);
+Ear ear1(9,false);
+Ear ear2(8,true);
 Accelerometer accelerometer;
 Speaker speaker;
 CaressHandler caressHandler(smallFSR1, smallFSR2, smallFSR3, ear1, ear2);
