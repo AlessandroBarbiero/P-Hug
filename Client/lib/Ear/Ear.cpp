@@ -2,6 +2,11 @@
 #include <Ear.h>
 #include <WiFi101.h>
 
+#define MAX_ANGLE_RIGHT 50
+#define MIN_ANGLE_RIGHT 0
+#define MAX_ANGLE_LEFT 140
+#define MIN_ANGLE_LEFT 90
+
 Ear::Ear(){
 }
 
@@ -10,10 +15,10 @@ Ear::Ear(int pin, bool isRight){
     _isRight = isRight;
     _servo.attach(pin);
     if(isRight){
-        _servo.write(0);
+        _servo.write(MIN_ANGLE_RIGHT);
     }
     else{
-        _servo.write(140);
+        _servo.write(MAX_ANGLE_LEFT);
     }
 }
 
@@ -22,21 +27,21 @@ void Ear::action(){
 
 void Ear::connect(){
     if(_isRight){
-        _angle = _maxAngle;
+        _angle = MAX_ANGLE_RIGHT;
         _servo.write(_angle);
     }
     else{
-        _angle = 90;
+        _angle = MIN_ANGLE_LEFT;
        _servo.write(_angle); 
     }
 }
 
 void Ear::disconnect(){
     if(_isRight){
-        _servo.write(0);
+        _servo.write(MIN_ANGLE_RIGHT);
     }
     else{
-       _servo.write(140); 
+       _servo.write(MAX_ANGLE_LEFT); 
     }
 }
 
@@ -72,10 +77,10 @@ void Ear::idle(){
                 else if ( _angle <= 0 && !_isGoingUp){
                     _isGoingUp = true;
                 }
-                else if ( _angle < _maxAngle && _isGoingUp){
+                else if ( _angle < MAX_ANGLE_RIGHT && _isGoingUp){
                     moveUp(5);
                 }
-                else if (_angle >= _maxAngle){
+                else if (_angle >= MAX_ANGLE_RIGHT){
                     _isHugging = false;
                 }
             }
@@ -84,11 +89,11 @@ void Ear::idle(){
             }
         }
         else if (_isCaressing){
-            if (_angle > 0) moveDown(1);
+            if (_angle > MIN_ANGLE_RIGHT) moveDown(1);
             else{
                 if(millis() > _caressActivationTime + _caressDuration){
-                    _angle = _maxAngle;
-                    _servo.write(_maxAngle);
+                    _angle = MAX_ANGLE_RIGHT;
+                    _servo.write(_angle);
                     _isCaressing = false;
                 }
             } 
@@ -97,16 +102,16 @@ void Ear::idle(){
     else{
         if(_isHugging){
         if(millis() < _hugActivationTime + _hugDuration){
-            if(_angle > 90 && !_isGoingUp){
+            if(_angle > MIN_ANGLE_LEFT && !_isGoingUp){
                 moveDown(5);
             }
-            else if ( _angle <= 90 && !_isGoingUp){
+            else if ( _angle <= MIN_ANGLE_LEFT && !_isGoingUp){
                 _isGoingUp = true;
             }
-            else if ( _angle < 140 && _isGoingUp){
+            else if ( _angle < MAX_ANGLE_LEFT && _isGoingUp){
                 moveUp(5);
             }
-            else if (_angle >= 140){
+            else if (_angle >= MAX_ANGLE_LEFT){
                 _isHugging = false;
             }
         }
@@ -115,11 +120,11 @@ void Ear::idle(){
         }
     }
     else if (_isCaressing){
-        if (_angle < 140) moveUp(1);
+        if (_angle < MAX_ANGLE_LEFT) moveUp(1);
         else{
             if(millis() > _caressActivationTime + _caressDuration){
-                _angle = 90;
-                _servo.write(90);
+                _angle = MIN_ANGLE_LEFT;
+                _servo.write(_angle);
                 _isCaressing = false;
             }
         } 

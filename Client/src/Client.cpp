@@ -12,6 +12,8 @@
 #include <ShakeHandler.h>
 #include <MPU6050_tockn.h>
 
+#define CLOCK_INTERVAL 50
+
 bool debug = true;
 WiFiConnection wifi;
 WiFiClient client;
@@ -54,7 +56,7 @@ void loop() {
     caressHandler.run();
     shakeHandler.run();
     hugHandler.run();
-    delay(50);
+    delay(CLOCK_INTERVAL);
     }
   }
 
@@ -83,7 +85,7 @@ void loop() {
     caressHandler.run();
     hugHandler.run();
     shakeHandler.run();
-    delay(50);
+    delay(CLOCK_INTERVAL);
   }
   
   Serial.println();
