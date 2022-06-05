@@ -11,7 +11,7 @@ Accelerometer::Accelerometer(MPU6050 *mpu6050) {
 void Accelerometer::setup(){
   Wire.begin();
   (*_mpu6050).begin();
-  (*_mpu6050).calcGyroOffsets(true);
+  (*_mpu6050).calcGyroOffsets(false);
 };
 
 float Accelerometer::getTemperature(){

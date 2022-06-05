@@ -1,5 +1,8 @@
 #include <ShakeHandler.h>
 
+#define SHAKE_TRIGGER 100
+#define SENSIBILITY 2
+
 ShakeHandler::ShakeHandler(int duration, Ear ear1, Ear ear2){
     _duration = duration;
     _ear1 = ear1;
@@ -40,11 +43,11 @@ void ShakeHandler::setAccelerometer(Accelerometer accelerometer){
 
 void ShakeHandler::run(){
     _accelerometer.run();
-    if(!_isShaking && (abs(_accelerometer.getGyroX()) > 2 || abs(_accelerometer.getGyroY()) > 2 || abs(_accelerometer.getGyroZ()) > 2)){
+    if(!_isShaking && (abs(_accelerometer.getGyroX()) > SHAKE_TRIGGER || abs(_accelerometer.getGyroY()) > SHAKE_TRIGGER || abs(_accelerometer.getGyroZ()) > SHAKE_TRIGGER)){
         _isShaking = true;
         setActivationTime();
     }
-    if(abs(_accelerometer.getGyroX()) < 1 && abs(_accelerometer.getGyroY()) < 1 && abs(_accelerometer.getGyroZ()) < 1){
+    if(abs(_accelerometer.getGyroX()) < SENSIBILITY && abs(_accelerometer.getGyroY()) < SENSIBILITY && abs(_accelerometer.getGyroZ()) < SENSIBILITY){
         _isShaking = false;
     }
     if(_isShaking && millis() >= getActivationTime() + _duration){
