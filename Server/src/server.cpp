@@ -12,7 +12,7 @@
 #include <Heat.h>
 
 // debug checking
- #define DEBUG
+//#define DEBUG
 // #define BUTTON A0
 
 #define RX 3
@@ -41,7 +41,7 @@
 
 // %%%%%% HUG PARAMETERS %%%%%%
 #define INFLATE_TIME 12000
-#define START_COOLDOWN 5000
+#define START_COOLDOWN 20000
 
 // %%%%%% HEAT PARAMETERS %%%%%%
 #define HEATING_DUTY_CYCLE (float)0.90
