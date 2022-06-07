@@ -20,6 +20,8 @@
             char* _host = "192.168.43.179";
             int _port = 5566;
             WiFiClient _client;
+            unsigned long _pingActivationTime = 0;
+            bool _isPinging = false;
     };
     
 #endif

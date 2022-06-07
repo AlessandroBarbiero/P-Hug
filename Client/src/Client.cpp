@@ -14,7 +14,7 @@
 
 #define CLOCK_INTERVAL 50
 
-bool debug = true;
+bool debug = false;
 WiFiConnection wifi;
 WiFiClient client;
 LongFSR longFSR(NULL,1,400);

@@ -3,6 +3,8 @@
 #include <WiFi101.h>
 #include <SPI.h>
 
+#define DELTA_PING 1000
+
 WiFiConnection::WiFiConnection(){
 
 }
@@ -54,5 +56,13 @@ void WiFiConnection::connect(){
 }
 
 void WiFiConnection::ping(WiFiClient client){
-    client.write('p');
+    unsigned long currentTime = millis();
+    if(!_isPinging){
+        _isPinging = true;
+        _pingActivationTime = millis();
+        client.write('p');
+    }
+    if(currentTime > _pingActivationTime + DELTA_PING){
+        _isPinging = false;
+    }
 }
