@@ -6,7 +6,7 @@ According to surveys and research the haptic sense is a significant aspect of hu
 
 ## Electronics organization
 Here are reported the wiring schemas for the two devices
-### __Giffy__
+### `__Giffy__`
 Built around an `Arduino Mkr1000 wifi`
 
 Input:
@@ -23,7 +23,7 @@ Output:
 
 ##
 
-### __The Jacket__
+### `__The Jacket__`
 Built around an `Adafruit Feather Huzzah`
 
 Input:
@@ -41,6 +41,15 @@ All the code has been written following the object oriented programming model wi
 The main idea is to build a client-server model to receive the information from Giffy and send it to the jacket that operates according to that.
 
 The code can be seen in the folders [Client](/Client/) for Giffy and [Server](/Server/) for the Jacket.
+
+## How to run the project
+1. Clone the repository
+    ```bash
+    git clone {repository URL}
+    ```
+2. Download an IDE (suggested [PlatformIO](https://platformio.org/) for `Visual Studio Code`).
+3. Open the folder [Client](/Client/) or [Server](/Server/Server%20Huzzah/) as `PlatformIO project` from the PlatformIO home.
+4. Click on `PlatformIO:upload` on the bottom left.
 
 ## Team
 ### Engineers
