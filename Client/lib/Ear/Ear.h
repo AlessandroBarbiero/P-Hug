@@ -7,7 +7,6 @@
         public:
             Ear();
             Ear(int pin, bool isRight);
-            void action();
             void connect();
             void disconnect();
             void caress();
