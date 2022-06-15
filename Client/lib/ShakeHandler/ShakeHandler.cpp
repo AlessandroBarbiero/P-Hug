@@ -1,7 +1,7 @@
 #include <ShakeHandler.h>
 
-#define SHAKE_TRIGGER 100
-#define SENSIBILITY 2
+#define SHAKE_TRIGGER 300
+#define SENSIBILITY 3
 
 ShakeHandler::ShakeHandler(int duration, Ear ear1, Ear ear2){
     _duration = duration;
