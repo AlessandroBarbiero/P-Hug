@@ -12,6 +12,8 @@
             void run();
             void readMifareClassicTag(uint8_t uid[], uint8_t uidLength);
             void getPayloadFromMifareClassicTag(uint8_t uid[], uint8_t uidLength, uint8_t payload[]);
+            void getWiFiData(uint8_t payload[], char *ssid, char *password);
+            void getData();
         private:
             Adafruit_PN532 *_nfc;
     };

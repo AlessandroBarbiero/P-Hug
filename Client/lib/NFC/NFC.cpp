@@ -23,7 +23,7 @@ void NFC::setup(){
     // configure board to read RFID tags
     (*_nfc).SAMConfig();
     
-    Serial.println("Waiting for an ISO14443A Card ...");
+    Serial.println("Waiting for an ISO14443A tag ...");
 }
 
 void NFC::run(){
@@ -31,6 +31,8 @@ void NFC::run(){
     uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer to store the returned UID
     uint8_t uidLength;                        // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
     uint8_t payload[1024];
+    char ssid[1024];
+    char password[1024];
         
     // Wait for an ISO14443A type cards (Mifare, etc.).  When one is found
     // 'uid' will be populated with the UID, and uidLength will indicate
@@ -38,9 +40,7 @@ void NFC::run(){
     success = (*_nfc).readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
     if (success) {
         // Display some basic information about the card
-        Serial.println("Found an ISO14443A card");
-        Serial.print("  UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
-        Serial.print("  UID Value: ");
+        Serial.println("Found an ISO14443A tag");
         (*_nfc).PrintHex(uid, uidLength);
         
         if (uidLength == 4)
@@ -53,11 +53,11 @@ void NFC::run(){
         cardid |= uid[2];  
         cardid <<= 8;
         cardid |= uid[3]; 
-        Serial.print("Seems to be a Mifare Classic card #");
-        Serial.println(cardid);
+        Serial.print("Seems to be a Mifare Classic tag");
+        //Serial.println(cardid);
         }
         getPayloadFromMifareClassicTag(uid,uidLength,payload);
-        (*_nfc).PrintHexChar(payload, 1024);
+        getWiFiData(payload,ssid,password);
         Serial.println("");
         
     }
@@ -133,5 +133,36 @@ void NFC::getPayloadFromMifareClassicTag(uint8_t uid[], uint8_t uidLength, uint8
       return;
     } 
   }
-  (*_nfc).PrintHexChar(payload, 1024);
 }
+
+// Save the ssid in the pointer and return the lenght of the ssid
+void NFC::getWiFiData(uint8_t payload[], char *ssid, char *password){
+  Serial.println("");
+  Serial.println("---------------------------------------------------");
+  int ssidLen = 0;
+  int i = 0;
+  int j = 0;
+  for(i = 57; payload[i]!=42; i++){
+    ssid[i-57]=payload[i];
+    ssidLen = ssidLen +1;
+  }
+  i++;
+  while(payload[i]!=254){
+    password[j] = payload[i];
+    j++;
+    i++;
+  }
+  Serial.println("SSID:");
+  for(int i=0; i<ssidLen; i++){
+    Serial.print(ssid[i]);
+  }
+  Serial.println("");
+  Serial.println("Password:");
+  for(int i = 0; i < j; i++){
+    Serial.print(password[i]);
+  }
+  Serial.println("");
+  Serial.println("---------------------------------------------------");
+  Serial.println("");
+}
+
