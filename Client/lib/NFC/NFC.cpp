@@ -7,6 +7,10 @@ NFC::NFC(Adafruit_PN532 *nfc){
     _nfc = nfc;
 }
 
+NFC::NFC(){
+
+}
+
 
 void NFC::setup(){
     (*_nfc).begin();
@@ -26,13 +30,19 @@ void NFC::setup(){
     Serial.println("Waiting for an ISO14443A tag ...");
 }
 
+char* NFC::getSSID(){
+  return _ssid;
+}
+
+char* NFC::getPassword(){
+  return _password;
+}
+
 void NFC::run(){
     uint8_t success;
     uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer to store the returned UID
     uint8_t uidLength;                        // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
     uint8_t payload[1024];
-    char ssid[1024];
-    char password[1024];
         
     // Wait for an ISO14443A type cards (Mifare, etc.).  When one is found
     // 'uid' will be populated with the UID, and uidLength will indicate
@@ -57,7 +67,8 @@ void NFC::run(){
         //Serial.println(cardid);
         }
         getPayloadFromMifareClassicTag(uid,uidLength,payload);
-        getWiFiData(payload,ssid,password);
+        getWiFiData(payload);
+        printWiFiData();
         Serial.println("");
         
     }
@@ -67,7 +78,6 @@ void NFC::run(){
 void NFC::readMifareClassicTag(uint8_t uid[], uint8_t uidLength) {
   uint8_t success;
   uint8_t keya[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-  uint8_t keyb[6] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
   uint8_t data[16];
   char dataline[12];
   
@@ -109,7 +119,6 @@ void NFC::readMifareClassicTag(uint8_t uid[], uint8_t uidLength) {
 void NFC::getPayloadFromMifareClassicTag(uint8_t uid[], uint8_t uidLength, uint8_t payload[]) {
   uint8_t success;
   uint8_t keya[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-  uint8_t keyb[6] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
   uint8_t data[16];
   
   // Skipping manufacturer block
@@ -136,33 +145,36 @@ void NFC::getPayloadFromMifareClassicTag(uint8_t uid[], uint8_t uidLength, uint8
 }
 
 // Save the ssid in the pointer and return the lenght of the ssid
-void NFC::getWiFiData(uint8_t payload[], char *ssid, char *password){
-  Serial.println("");
-  Serial.println("---------------------------------------------------");
+void NFC::getWiFiData(uint8_t payload[]){
   int ssidLen = 0;
   int i = 0;
   int j = 0;
   for(i = 57; payload[i]!=42; i++){
-    ssid[i-57]=payload[i];
+    _ssid[i-57]=payload[i];
     ssidLen = ssidLen +1;
   }
   i++;
   while(payload[i]!=254){
-    password[j] = payload[i];
+    _password[j] = payload[i];
     j++;
     i++;
   }
+}
+
+
+void NFC::printWiFiData(){
+  Serial.println("---------------------------------------------------");
   Serial.println("SSID:");
-  for(int i=0; i<ssidLen; i++){
-    Serial.print(ssid[i]);
-  }
+  Serial.println(_ssid);
   Serial.println("");
   Serial.println("Password:");
-  for(int i = 0; i < j; i++){
-    Serial.print(password[i]);
-  }
+  Serial.println(_password);
   Serial.println("");
   Serial.println("---------------------------------------------------");
   Serial.println("");
 }
+
+
+
+
 

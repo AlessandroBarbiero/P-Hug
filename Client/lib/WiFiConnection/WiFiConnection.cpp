@@ -30,9 +30,12 @@ WiFiClient WiFiConnection::getClient(){
 }
 
 void WiFiConnection::setup(){
+    _nfc.run();
+    _ssid = _nfc.getSSID();
+    _password = _nfc.getPassword();
     Serial.print("Connecting to ");
     Serial.println(getssid());
-    
+
     WiFi.begin(getssid(), getPassword());
     
     while (WiFi.status() != WL_CONNECTED) {
@@ -65,4 +68,8 @@ void WiFiConnection::ping(WiFiClient client){
     if(currentTime > _pingActivationTime + DELTA_PING){
         _isPinging = false;
     }
+}
+
+void WiFiConnection::setNFC(NFC nfc){
+    _nfc = nfc;
 }

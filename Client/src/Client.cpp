@@ -17,8 +17,8 @@
 #define PN532_IRQ   (2) //11
 #define PN532_RESET (3)  // 12
 
-bool debug = true;
-bool debugNFC = true;
+bool debug = false;
+bool debugNFC = false;
 WiFiConnection wifi;
 WiFiClient client;
 LongFSR longFSR(NULL,1,400);
@@ -49,6 +49,7 @@ void setup() {
   speaker.networkConnectionAttempt();
   nfc.setup();
   if(!debug){
+    wifi.setNFC(nfc);
     wifi.setup();
   }
 }
