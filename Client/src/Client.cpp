@@ -11,10 +11,14 @@
 #include <HugHandler.h>
 #include <ShakeHandler.h>
 #include <MPU6050_tockn.h>
+#include <NFC.h>
 
 #define CLOCK_INTERVAL 50
+#define PN532_IRQ   (2) //11
+#define PN532_RESET (3)  // 12
 
 bool debug = false;
+bool debugNFC = false;
 WiFiConnection wifi;
 WiFiClient client;
 LongFSR longFSR(NULL,1,400);
@@ -29,6 +33,8 @@ Speaker speaker;
 CaressHandler caressHandler(smallFSR1, smallFSR2, smallFSR3, ear1, ear2);
 HugHandler hugHandler(longFSR,ear1, ear2);
 ShakeHandler shakeHandler(2000,ear1,ear2);
+Adafruit_PN532 pn532(PN532_IRQ, PN532_RESET);
+NFC nfc(&pn532);
 
 
 void setup() {
@@ -41,12 +47,20 @@ void setup() {
   hugHandler.setSpeaker(speaker);
   shakeHandler.setAccelerometer(accelerometer);
   speaker.networkConnectionAttempt();
+  nfc.setup();
   if(!debug){
+    wifi.setNFC(nfc);
     wifi.setup();
   }
 }
 
 void loop() {
+
+  if(debugNFC){
+    while(1){
+      nfc.run();
+    }
+  }
 
   if(debug){
     ear1.connect();

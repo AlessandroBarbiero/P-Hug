@@ -15,15 +15,15 @@ Ear::Ear(int pin, bool isRight){
     _isRight = isRight;
     _servo.attach(pin);
     if(isRight){
+        _angle = MIN_ANGLE_RIGHT;
         _servo.write(MIN_ANGLE_RIGHT);
     }
     else{
+        _angle = MAX_ANGLE_LEFT;
         _servo.write(MAX_ANGLE_LEFT);
     }
 }
 
-void Ear::action(){
-}
 
 void Ear::connect(){
     if(_isRight){
