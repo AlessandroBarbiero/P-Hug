@@ -143,6 +143,10 @@ void loop() {
           case 'h':
             hugUnit.start(exTime); 
             break;
+          case 's':
+            caressUnitLeft.shake(exTime);
+            caressUnitRight.shake(exTime);
+            break;
           default:
             Serial.print("D: Message: ");
             Serial.println(msg);
