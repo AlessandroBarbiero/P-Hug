@@ -6,6 +6,8 @@
     class WiFiConnection {
         public:
             WiFiConnection(String ssid, String password, WiFiServer server);
+            void setPassword(String password);
+            void setSSID(String ssid);
             int getPort();
             bool searchClient();
             void setup();

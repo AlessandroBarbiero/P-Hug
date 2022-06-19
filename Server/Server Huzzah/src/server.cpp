@@ -15,6 +15,13 @@
 //#define DEBUG
 // #define BUTTON A0
 
+//%%%%%%%%%%%%% WIFI PARAMETERS %%%%%%%%%%%%%%
+const String SSID_prefix = "SSID: ";
+const String PSW_prefix = "Password: ";
+bool searchingSSID = true;
+bool searchingPassword = true;
+
+
 #define RX 3
 #define TX 1
 
@@ -79,6 +86,25 @@ void setup() {
     done2=false;
     done3=false;
   #else
+
+  String connectionDetails;
+  while(searchingSSID || searchingPassword){
+    if(Serial.available()>0){
+      Serial.print("D: Message arrived: ");
+      connectionDetails = Serial.readString();
+      Serial.println(connectionDetails);
+      if(connectionDetails.startsWith(SSID_prefix)){
+        wifi.setSSID(connectionDetails.substring(SSID_prefix.length()));
+        searchingSSID = false;
+      }
+      if(connectionDetails.startsWith(PSW_prefix)){
+        wifi.setPassword(connectionDetails.substring(PSW_prefix.length()));
+        searchingPassword = false;
+      }
+    }
+  }
+  Serial.println("R: success");
+  
   wifi.setup();
   caressUnitLeft.notify(2);
   #endif

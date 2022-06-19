@@ -9,6 +9,14 @@ WiFiConnection::WiFiConnection(String ssid, String password, WiFiServer server){
     _server = server;
 }
 
+void WiFiConnection::setPassword(String password){
+    _password = password;
+}
+
+void WiFiConnection::setSSID(String ssid){
+    _ssid = ssid;
+}
+
 int WiFiConnection::getPort(){
     return _port;
 }
