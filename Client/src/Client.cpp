@@ -22,9 +22,9 @@ bool debugNFC = false;
 WiFiConnection wifi;
 WiFiClient client;
 LongFSR longFSR(NULL,1,400);
-SmallFSR smallFSR1(2,400,2000);
-SmallFSR smallFSR2(3,400,2000);
-SmallFSR smallFSR3(4,400,2000);
+SmallFSR smallFSR1(2,50,2000);
+SmallFSR smallFSR2(3,50,2000);
+SmallFSR smallFSR3(4,50,2000);
 Ear ear1(9,false);
 Ear ear2(8,true);
 MPU6050 mpu6050(Wire);
@@ -89,6 +89,7 @@ void loop() {
 
   speaker.connect();
   ear1.connect();
+  ear2.connect();
 
   caressHandler.setClient(client);
   hugHandler.setClient(client);
