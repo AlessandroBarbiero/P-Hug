@@ -80,6 +80,8 @@ void setup() {
     done3=false;
   #else
   wifi.setup();
+  caressUnitLeft.notify(2);
+  caressUnitRight.notify(2);
   #endif
 }
 
@@ -119,6 +121,8 @@ void loop() {
 
   if (wifi.searchClient()) {
     Serial.println("D: new client");
+    caressUnitLeft.notify(2);
+    caressUnitRight.notify(2);
     lastPing = millis();
     
     while (wifi.isClientConnected()) {
@@ -142,6 +146,10 @@ void loop() {
             break;
           case 'h':
             hugUnit.start(exTime); 
+            break;
+          case 's':
+            caressUnitLeft.shake(exTime);
+            caressUnitRight.shake(exTime);
             break;
           default:
             Serial.print("D: Message: ");
