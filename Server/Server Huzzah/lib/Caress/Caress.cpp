@@ -20,16 +20,17 @@ void Caress::notify(uint8_t repeat){
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
                 analogWrite(_pins[pinIndex], 255);
         }
-        delay(10);
+        delay(500);
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
                 analogWrite(_pins[pinIndex], 0);
         }
-        delay(10);
+        if(i<repeat-1)
+            delay(500);
     }
 }
 
 void Caress::start(unsigned long startingTime, int interval, int shift){
-    if(startingTime - _lastCaress > COOLDOWN){
+    if(!_shaking && startingTime - _lastCaress > COOLDOWN){
         Serial.print("D: Caress started at time: ");
         _lastCaress = startingTime;
         Serial.println(_lastCaress);
@@ -45,14 +46,14 @@ void Caress::start(unsigned long startingTime, int interval, int shift){
 }
 
 void Caress::shake(unsigned long startingTime){
-    if(startingTime - _lastShake > COOLDOWN){
+    if(!_caressing && startingTime - _lastShake > COOLDOWN){
         Serial.print("D: Shake started at time: ");
-        _lastCaress = startingTime;
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
             analogWrite(_pins[pinIndex], 255);
-            _shaking = true;
-            _lastShake = startingTime;
         }
+        _shaking = true;
+        _lastShake = startingTime;
+        Serial.println(_lastShake);
     }
 }
 

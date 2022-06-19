@@ -40,7 +40,7 @@
  */
 
 // %%%%%% HUG PARAMETERS %%%%%%
-#define INFLATE_TIME 12000
+#define INFLATE_TIME 11000
 #define START_COOLDOWN 20000
 
 // %%%%%% HEAT PARAMETERS %%%%%%
@@ -81,7 +81,6 @@ void setup() {
   #else
   wifi.setup();
   caressUnitLeft.notify(2);
-  caressUnitRight.notify(2);
   #endif
 }
 
@@ -121,7 +120,6 @@ void loop() {
 
   if (wifi.searchClient()) {
     Serial.println("D: new client");
-    caressUnitLeft.notify(2);
     caressUnitRight.notify(2);
     lastPing = millis();
     
