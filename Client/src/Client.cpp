@@ -68,8 +68,8 @@ void loop() {
 
   while(1){
     caressHandler.run();
-    shakeHandler.run();
-    hugHandler.run();
+    //shakeHandler.run();
+    //hugHandler.run();
     delay(CLOCK_INTERVAL);
     }
   }
@@ -108,4 +108,5 @@ void loop() {
 
   speaker.disconnect();
   ear1.disconnect();
+  ear2.disconnect();
 }

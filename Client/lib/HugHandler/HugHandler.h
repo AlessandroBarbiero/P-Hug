@@ -14,11 +14,11 @@
             void run();
         private:
             WiFiClient _client;
-            int _duration;
             LongFSR _longFSR;
             Speaker _speaker;
             Ear _ear1;
-            Ear _ear2;            
+            Ear _ear2; 
+            unsigned long _messageTime;           
     };
     
 #endif

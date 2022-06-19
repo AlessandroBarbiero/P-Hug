@@ -3,7 +3,7 @@
 #include <WiFi101.h>
 #include <SPI.h>
 
-#define DELTA_PING 1000
+#define DELTA_PING 5000
 
 WiFiConnection::WiFiConnection(){
 
