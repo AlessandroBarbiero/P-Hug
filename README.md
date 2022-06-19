@@ -32,7 +32,7 @@ Output:
 - Speaker
 - Integrated Wifi module (ATSAMW25) of Arduino Mkr1000 wifi
 
-<img src="Documentation/Client_wiring.png" />
+<img src="Documentation/Wiring/Client_wiring.png" />
 
 ##
 
@@ -47,7 +47,7 @@ Output:
 - Air pump to inflate the chamber around the waist to simulate the hug
 - Heating resistance activated via a relè
 
-<img src="Documentation/Server_wiring.png" />
+<img src="Documentation/Wiring/Server_wiring.png" />
 
 ## Code organization
 All the code has been written following the object oriented programming model with the help of the platform `PlatformIO`.
