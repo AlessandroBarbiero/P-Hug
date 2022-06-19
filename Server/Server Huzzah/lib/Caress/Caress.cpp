@@ -15,6 +15,19 @@ Caress::Caress(uint8_t pins[], int size) {
     _numOfSteps = (_shift*(_numOfVib-1))+2*_interval;
 }
 
+void Caress::notify(uint8_t repeat){
+    for(int i=0; i<repeat; i++){
+        for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
+                analogWrite(_pins[pinIndex], 255);
+        }
+        delay(10);
+        for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
+                analogWrite(_pins[pinIndex], 0);
+        }
+        delay(10);
+    }
+}
+
 void Caress::start(unsigned long startingTime, int interval, int shift){
     if(startingTime - _lastCaress > COOLDOWN){
         Serial.print("D: Caress started at time: ");
