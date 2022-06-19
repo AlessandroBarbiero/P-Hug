@@ -1,6 +1,8 @@
 #include <HugHandler.h>
+#define MESSAGE_DELAY 6000
 
 HugHandler::HugHandler(LongFSR longFSR, Ear ear1, Ear ear2){
+    _messageTime = millis();
     _longFSR = longFSR;
     _ear1 = ear1;
     _ear2 = ear2;
@@ -23,7 +25,10 @@ void HugHandler::run(){
     _longFSR.run();
     
     if(_longFSR.isActive()){
-        getClient().write('h');
+        if(millis() >= _messageTime + MESSAGE_DELAY){
+            _messageTime = millis();
+            getClient().write('h');
+        }
         _ear1.hug();
         _ear2.hug();
         _speaker.hug();

@@ -48,7 +48,7 @@ void SmallFSR::send(){
 
 void SmallFSR::run(){
     int value = analogRead(_pin);
-    Serial.println(value);
+    //Serial.println(value);
     if(value > _trigger){
         setActive(true);
         setActivationTime();
