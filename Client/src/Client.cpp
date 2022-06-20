@@ -17,7 +17,7 @@
 #define PN532_IRQ   (2) //11
 #define PN532_RESET (3)  // 12
 
-bool debug = false;
+bool debug = true;
 bool debugNFC = false;
 WiFiConnection wifi;
 WiFiClient client;

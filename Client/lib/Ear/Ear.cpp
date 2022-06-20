@@ -68,6 +68,7 @@ void Ear::read(){
 }
 
 void Ear::idle(){
+    _angle = _servo.read();
     if(_isRight){
         if(_isHugging){
             if(millis() < _hugActivationTime + _hugDuration){
@@ -89,7 +90,13 @@ void Ear::idle(){
             }
         }
         else if (_isCaressing){
-            if (_angle > MIN_ANGLE_RIGHT) moveDown(1);
+            Serial.println("IS CARESSING");
+            Serial.println(_angle);
+            if (_angle > MIN_ANGLE_RIGHT){
+                moveDown(1);
+                Serial.println("GOING DOWN");
+
+            }
             else{
                 if(millis() > _caressActivationTime + _caressDuration){
                     _angle = MAX_ANGLE_RIGHT;
