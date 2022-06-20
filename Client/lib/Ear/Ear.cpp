@@ -4,8 +4,8 @@
 
 #define MAX_ANGLE_RIGHT 50
 #define MIN_ANGLE_RIGHT 0
-#define MAX_ANGLE_LEFT 140
-#define MIN_ANGLE_LEFT 90
+#define MAX_ANGLE_LEFT 130
+#define MIN_ANGLE_LEFT 80
 
 Ear::Ear(){
 }

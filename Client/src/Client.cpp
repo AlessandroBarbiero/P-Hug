@@ -17,7 +17,7 @@
 #define PN532_IRQ   (2) //11
 #define PN532_RESET (3)  // 12
 
-bool debug = true;
+bool debug = false;
 bool debugNFC = false;
 WiFiConnection wifi;
 WiFiClient client;
@@ -68,7 +68,7 @@ void loop() {
 
   while(1){
     caressHandler.run();
-    //shakeHandler.run();
+    shakeHandler.run();
     hugHandler.run();
     delay(CLOCK_INTERVAL);
     }

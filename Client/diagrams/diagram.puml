@@ -1,7 +1,8 @@
 @startuml
 
-class Accelerometer {
+        class Accelerometer {
             Accelerometer()
+            Accelerometer(MPU6050 *mpu6050)
             void setup()
             float getTemperature()
             float getAccelerationX()
@@ -16,6 +17,7 @@ class Accelerometer {
             void print()
             WiFiClient _client
             Adafruit_MPU6050 _mpu
+            MPU6050 *_mpu6050
             float _temp
             float _accX
             float _accY
@@ -25,23 +27,76 @@ class Accelerometer {
             float _gyroZ
     }
 
-class Ear {
+    class CaressHandler {
+            CaressHandler(SmallFSR smallFSR1, SmallFSR smallFSR2, SmallFSR smallFSR3, Ear ear1, Ear ear2)
+            WiFiClient getClient()
+            unsigned long getActivationTime()
+            int getDuration()
+            bool getReady()
+            void setClient(WiFiClient client)
+            void setActivationTime(unsigned long activationTime)
+            void setReady(bool ready)
+            void setSpeaker(Speaker speaker)
+            void run()
+            WiFiClient _client
+            int _duration
+            SmallFSR _smallFSR1
+            SmallFSR _smallFSR2
+            SmallFSR _smallFSR3
+            Speaker _speaker
+            Ear _ear1
+            Ear _ear2
+            unsigned long _activationTime
+            bool _ready
+            
+    }
+
+    class Ear {
             Ear()
-            Ear(int pin)
-            void action()
+            Ear(int pin, bool isRight)
             void connect()
             void disconnect()
             void caress()
             void hug()
             void shake()
+            void read()
+            void idle()
+            void moveUp(int delta)
+            void moveDown(int delta)
+            void moveDownUpDown(int start,int stop, int time)
+            void moveUpDownUp(int start, int stop, int time)
             WiFiClient _client
             int _pin
             Servo _servo
-            int _angle
+            int _angle = 0
+            bool _isRight
+            bool _isGoingUp
+            unsigned long _hugActivationTime
+            unsigned long _hugDuration
+            unsigned long _caressActivationTime
+            unsigned long _caressDuration
+            bool _isHugging
+            bool _isCaressing
+    }
+
+    class HugHandler {
+            HugHandler(LongFSR, Ear ear1, Ear ear2)
+            WiFiClient getClient()
+            void setClient(WiFiClient client)
+            void setSpeaker(Speaker speaker)
+            void run()
+            WiFiClient _client
+            LongFSR _longFSR
+            Speaker _speaker
+            Ear _ear1
+            Ear _ear2
+            bool _earsUp
+            unsigned long _activationTime
+            unsigned long _messageTime           
     }
 
     class LongFSR {
-            LongFSR()
+            LongFSR();
             LongFSR(WiFiClient client, int pin, int trigger)
             WiFiClient getClient()
             int getTrigger()
@@ -53,7 +108,47 @@ class Ear {
             WiFiClient _client
             int _pin
             int _trigger
-            bool _active
+            bool _active = false
+    }
+
+    class NFC{
+            NFC()
+            NFC(Adafruit_PN532 *nfc)
+            void setup()
+            char *getSSID()
+            char *getPassword()
+            uint8_t *getPayloadFromMifareClassicTag(uint8_t uid[], uint8_t uidLength)
+            void run()
+            void readMifareClassicTag(uint8_t uid[], uint8_t uidLength)
+            void getPayloadFromMifareClassicTag(uint8_t uid[], uint8_t uidLength, uint8_t payload[])
+            void getWiFiData(uint8_t payload[])
+            void getData()
+            void printWiFiData()
+            Adafruit_PN532 *_nfc
+            char _ssid[30]
+            char _password[30]
+    }
+
+    class ShakeHandler {
+        public:
+            ShakeHandler(int duration, Ear ear1, Ear ear2)
+            WiFiClient getClient()
+            unsigned long getActivationTime()
+            int getDuration()
+            Accelerometer getAccelerometer()
+            void setClient(WiFiClient client)
+            void setActivationTime()
+            void setSpeaker(Speaker speaker)
+            void setAccelerometer(Accelerometer accelerometer)
+            void run()
+            WiFiClient _client
+            int _duration
+            Accelerometer _accelerometer
+            Speaker _speaker
+            Ear _ear1
+            Ear _ear2
+            bool _isShaking = false
+            unsigned long _activationTime
     }
 
     class SmallFSR {
@@ -73,9 +168,10 @@ class Ear {
             int _trigger
             int _duration
             int _step
-            bool _active 
+            bool _active
             unsigned long _activationTime
     }
+
 
     class Speaker{
             Speaker()
@@ -101,74 +197,18 @@ class Ear {
             void setup()
             void connect()
             void ping(WiFiClient client)
-            char* _ssid 
-            char* _password 
-            char* _host 
-            int _port 
+            void setNFC(NFC nfc)
+            char* _ssid
+            char* _password
+            char* _host
+            int _port = 5566
             WiFiClient _client
-    }
-
-    class CaressHandler {
-            CaressHandler(SmallFSR smallFSR1, SmallFSR smallFSR2, SmallFSR smallFSR3, Ear ear1, Ear ear2)
-            WiFiClient getClient()
-            unsigned long getActivationTime()
-            int getDuration()
-            bool getReady()
-            void setClient(WiFiClient client)
-            void setActivationTime(unsigned long activationTime)
-            void setReady(bool ready)
-            void setSpeaker(Speaker speaker)
-            void run()
-            WiFiClient _client
-            int _duration
-            SmallFSR _smallFSR1
-            SmallFSR _smallFSR2
-            SmallFSR _smallFSR3
-            Speaker _speaker
-            Ear _ear1
-            Ear _ear2
-            unsigned long _activationTime 
-            bool _ready
-            
-    }
-
-    class HugHandler {
-        public:
-            HugHandler(LongFSR, Ear ear1, Ear ear2)
-            WiFiClient getClient()
-            void setClient(WiFiClient client)
-            void setSpeaker(Speaker speaker)
-            void run()
-        private:
-            WiFiClient _client
-            int _duration
-            LongFSR _longFSR
-            Speaker _speaker
-            Ear _ear1
-            Ear _ear2            
+            unsigned long _pingActivationTime = 0
+            bool _isPinging = false
+            NFC _nfc
     }
 
 
-    class ShakeHandler {
-            ShakeHandler(int duration, Ear ear1, Ear ear2)
-            WiFiClient getClient()
-            unsigned long getActivationTime()
-            int getDuration()
-            Accelerometer getAccelerometer()
-            void setClient(WiFiClient client)
-            void setActivationTime()
-            void setSpeaker(Speaker speaker)
-            void setAccelerometer(Accelerometer accelerometer)
-            void run()
-            WiFiClient _client
-            int _duration
-            Accelerometer _accelerometer
-            Speaker _speaker
-            Ear _ear1
-            Ear _ear2
-            bool _isShaking 
-            unsigned long _activationTime
-    }
 
     ShakeHandler -u-> "use" WiFiConnection
     CaressHandler -u-> "use" WiFiConnection
@@ -185,5 +225,7 @@ class Ear {
     HugHandler *-- Speaker
     HugHandler *-- Ear
     HugHandler *-- LongFSR
+
+    WiFiConnection *-- NFC
 
 @enduml
