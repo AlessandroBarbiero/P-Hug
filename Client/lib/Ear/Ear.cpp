@@ -51,6 +51,9 @@ void Ear::hug(){
         _isHugging = true;
         _isGoingUp = false;
         _hugActivationTime = millis();
+        if(!_isRight){
+            _servo.write(MAX_ANGLE_LEFT);
+        }
     }
     idle();
 }
