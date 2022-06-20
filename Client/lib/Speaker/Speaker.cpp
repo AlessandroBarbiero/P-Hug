@@ -17,16 +17,16 @@ void Speaker::setup(){
     Serial.println();
     Serial.println(F("Initializing the player ... (May take 3~5 seconds)"));
 
-    if (!_myDFPlayer.begin(Serial1)) {  //Use softwareSerial to communicate with mp3.
+    if (!_myDFPlayer.begin(Serial1)) {  
         Serial.println(F("Unable to begin:"));
         Serial.println(F("1.Please recheck the connection!"));
         Serial.println(F("2.Please insert the SD card!"));
         while(true){
-        delay(0); // Code to compatible with ESP8266 watch dog.
+        delay(0); 
         }
     }
     Serial.println(F("Player online."));
-    _myDFPlayer.volume(20);  //Set volume value. From 0 to 30
+    _myDFPlayer.volume(28);  //Set volume value. From 0 to 30
 
 }
 
