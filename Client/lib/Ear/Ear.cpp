@@ -90,12 +90,9 @@ void Ear::idle(){
             }
         }
         else if (_isCaressing){
-            Serial.println("IS CARESSING");
             Serial.println(_angle);
             if (_angle > MIN_ANGLE_RIGHT){
                 moveDown(1);
-                Serial.println("GOING DOWN");
-
             }
             else{
                 if(millis() > _caressActivationTime + _caressDuration){
