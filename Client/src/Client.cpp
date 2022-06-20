@@ -17,14 +17,14 @@
 #define PN532_IRQ   (2) //11
 #define PN532_RESET (3)  // 12
 
-bool debug = false;
+bool debug = true;
 bool debugNFC = false;
 WiFiConnection wifi;
 WiFiClient client;
 LongFSR longFSR(NULL,1,400);
-SmallFSR smallFSR1(2,50,2000);
-SmallFSR smallFSR2(3,50,2000);
-SmallFSR smallFSR3(4,50,2000);
+SmallFSR smallFSR1(2,50,800);
+SmallFSR smallFSR2(3,50,800);
+SmallFSR smallFSR3(4,50,800);
 Ear ear1(9,false);
 Ear ear2(8,true);
 MPU6050 mpu6050(Wire);
@@ -69,7 +69,7 @@ void loop() {
   while(1){
     caressHandler.run();
     //shakeHandler.run();
-    //hugHandler.run();
+    hugHandler.run();
     delay(CLOCK_INTERVAL);
     }
   }

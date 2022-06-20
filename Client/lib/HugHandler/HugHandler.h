@@ -18,6 +18,8 @@
             Speaker _speaker;
             Ear _ear1;
             Ear _ear2; 
+            bool _earsUp = true;
+            unsigned long _activationTime;
             unsigned long _messageTime;           
     };
     
