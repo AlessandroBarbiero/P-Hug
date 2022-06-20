@@ -2,6 +2,8 @@
 #include <Caress.h>
 #define COOLDOWN 5000
 #define SHAKE_DURATION 5000
+#define INTERVAL_NOTIFICATION 400
+#define MAX_VIBRATION 255
 
 Caress::Caress(uint8_t pins[], int size) {
     _numOfVib = size;
@@ -18,14 +20,14 @@ Caress::Caress(uint8_t pins[], int size) {
 void Caress::notify(uint8_t repeat){
     for(int i=0; i<repeat; i++){
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
-                analogWrite(_pins[pinIndex], 255);
+                analogWrite(_pins[pinIndex], MAX_VIBRATION);
         }
-        delay(500);
+        delay(INTERVAL_NOTIFICATION);
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
                 analogWrite(_pins[pinIndex], 0);
         }
         if(i<repeat-1)
-            delay(500);
+            delay(INTERVAL_NOTIFICATION);
     }
 }
 
@@ -49,7 +51,7 @@ void Caress::shake(unsigned long startingTime){
     if(!_caressing && startingTime - _lastShake > COOLDOWN){
         Serial.print("D: Shake started at time: ");
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
-            analogWrite(_pins[pinIndex], 255);
+            analogWrite(_pins[pinIndex], MAX_VIBRATION);
         }
         _shaking = true;
         _lastShake = startingTime;
