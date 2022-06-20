@@ -40,13 +40,12 @@ void LongFSR::send(){
 
 void LongFSR::run(){
     int value = analogRead(_pin);
-    Serial.println("=======================================================");
-    Serial.println("Hug value:");
-    Serial.println(value);
-    Serial.println("=======================================================");
     if(value > getTrigger()){
         setActive(true);
-        Serial.println("Hug");
+        Serial.println("=======================================================");
+        Serial.println("Hug Done, value:");
+        Serial.println(value);
+        Serial.println("=======================================================");
     }
     else{
         setActive(false);

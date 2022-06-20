@@ -69,7 +69,7 @@ void loop() {
   while(1){
     caressHandler.run();
     //shakeHandler.run();
-    //hugHandler.run();
+    hugHandler.run();
     delay(CLOCK_INTERVAL);
     }
   }

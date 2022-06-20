@@ -1,5 +1,6 @@
 #include <HugHandler.h>
 #define MESSAGE_DELAY 6000
+#define HUG_DURATION 5000
 
 HugHandler::HugHandler(LongFSR longFSR, Ear ear1, Ear ear2){
     _messageTime = millis();
@@ -29,6 +30,8 @@ void HugHandler::run(){
             _messageTime = millis();
             getClient().write('h');
         }
+        _activationTime = millis();
+        _earsUp = false;
         _ear1.hug();
         _ear2.hug();
         _speaker.hug();
@@ -36,5 +39,10 @@ void HugHandler::run(){
     else{
         _ear1.idle();
         _ear2.idle();
+        if(millis()>_activationTime + HUG_DURATION && !_earsUp){
+            _ear1.connect();
+            _ear2.connect();
+            _earsUp = true;
+        }
     }
 }
