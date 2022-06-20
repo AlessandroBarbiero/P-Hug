@@ -15,11 +15,9 @@ Ear::Ear(int pin, bool isRight){
     _isRight = isRight;
     _servo.attach(pin);
     if(isRight){
-        _angle = MIN_ANGLE_RIGHT;
         _servo.write(MIN_ANGLE_RIGHT);
     }
     else{
-        _angle = MAX_ANGLE_LEFT;
         _servo.write(MAX_ANGLE_LEFT);
     }
 }
@@ -27,12 +25,10 @@ Ear::Ear(int pin, bool isRight){
 
 void Ear::connect(){
     if(_isRight){
-        _angle = MAX_ANGLE_RIGHT;
-        _servo.write(_angle);
+        _servo.write(MAX_ANGLE_RIGHT);
     }
     else{
-        _angle = MIN_ANGLE_LEFT;
-       _servo.write(_angle); 
+       _servo.write(MIN_ANGLE_LEFT); 
     }
 }
 
@@ -90,7 +86,6 @@ void Ear::idle(){
             }
         }
         else if (_isCaressing){
-            Serial.println(_angle);
             if (_angle > MIN_ANGLE_RIGHT){
                 moveDown(1);
             }
