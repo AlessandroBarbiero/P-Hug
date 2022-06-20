@@ -5,19 +5,18 @@
     class Credentials {
         public:
             Credentials();
-            void clear();
             void search();
-            void save();
             bool arePresent();
+            bool readFromMemory();
             String getSsid();
             String getPassword();
 
         private:
-            bool _arePresent;
+            bool _arePresent = false;
             String _password, _ssid;
-            byte _arePresentAddress, _ssidAddress, _passwordAddress;
-            bool readFromMemory();
-
+            const String SSID_prefix = "SSID: ";
+            const String PSW_prefix = "Password: ";
+            
     };
     
 #endif
