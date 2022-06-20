@@ -3,18 +3,10 @@
 #include <ESP8266WiFi.h>
 #include <SPI.h>
 
-WiFiConnection::WiFiConnection(String ssid, String password, WiFiServer server){
-    _ssid = ssid;
-    _password = password;
+WiFiConnection::WiFiConnection(WiFiServer server){
     _server = server;
-}
-
-void WiFiConnection::setPassword(String password){
-    _password = password;
-}
-
-void WiFiConnection::setSSID(String ssid){
-    _ssid = ssid;
+    if(!_credentials.arePresent())
+        _credentials.search();
 }
 
 int WiFiConnection::getPort(){
@@ -34,20 +26,26 @@ bool WiFiConnection::checkMessage(){
     return _client.available() > 0;
 }
 
+// Try to connect to the network, if it doesn't work after 60 seconds it tries to retreive new credentials from serial port
 void WiFiConnection::setup(){
     int status = WL_IDLE_STATUS;
     WiFi.config(_ip, _gateway, _subnet);
-    Serial.print("D: Connecting to ");
-    Serial.println(_ssid);
     
-    // attempt to connect to Wifi network:
+    int i = 1;
+    // attempt to connect to Wifi network, if connection goes wrong for 6 times (60 seconds) ask again credentials via bluetooth
     while (status != WL_CONNECTED) {
+        
         Serial.print("D: Attempting to connect to network: ");
-        Serial.println(_ssid);
-        status = WiFi.begin(_ssid, _password);
+        Serial.println(_credentials.getSsid());
+        status = WiFi.begin(_credentials.getSsid(), _credentials.getPassword());
 
         // wait 10 seconds for connection:
         delay(10000);
+
+        if(i%6==0){
+            _credentials.search();
+        }
+        i++;
     }
   
     _server.begin();
