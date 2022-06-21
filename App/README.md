@@ -20,7 +20,7 @@ Accept all the conditions, install it and you now should see a screen like this:
 
 Before turning on the robot:
 
-- Open the application,Activate your hotspot/wifi and NFC in your mobile phone 
+- Open the application, activate your hotspot/wifi and NFC in your mobile phone 
 
 - Add SSID of the network in the first text field and the password in the second textfield (username and password have to be maximum 15 characters lenght each)
 
