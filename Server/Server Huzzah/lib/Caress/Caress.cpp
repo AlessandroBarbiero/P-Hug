@@ -13,7 +13,9 @@ Caress::Caress(uint8_t pins[], int size) {
     }
     _step = 0;
     _caressing = false;
+    _shaking = false;
     _lastCaress = 0;
+    _lastShake = 0;
     _numOfSteps = (_shift*(_numOfVib-1))+2*_interval;
 }
 
@@ -32,7 +34,8 @@ void Caress::notify(uint8_t repeat){
 }
 
 void Caress::start(unsigned long startingTime, int interval, int shift){
-    if(!_shaking && startingTime - _lastCaress > COOLDOWN){
+    
+    if(startingTime - _lastCaress > COOLDOWN){
         Serial.print("D: Caress started at time: ");
         _lastCaress = startingTime;
         Serial.println(_lastCaress);
@@ -48,14 +51,15 @@ void Caress::start(unsigned long startingTime, int interval, int shift){
 }
 
 void Caress::shake(unsigned long startingTime){
-    if(!_caressing && startingTime - _lastShake > COOLDOWN){
+    if(startingTime - _lastShake > COOLDOWN){
         Serial.print("D: Shake started at time: ");
+        Serial.println(startingTime);
+        _lastCaress = startingTime;
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
-            analogWrite(_pins[pinIndex], MAX_VIBRATION);
+            analogWrite(_pins[pinIndex], 255);
         }
         _shaking = true;
         _lastShake = startingTime;
-        Serial.println(_lastShake);
     }
 }
 
@@ -63,8 +67,8 @@ void Caress::run(unsigned long time){
     if(_shaking && time - _lastShake > SHAKE_DURATION) {
         for(int pinIndex=0; pinIndex<_numOfVib; pinIndex++){
             analogWrite(_pins[pinIndex], 0);
-            _shaking = false;
         }
+        _shaking = false;
 
     }
     if (_caressing){
