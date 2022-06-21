@@ -5,6 +5,8 @@ class Caress {
         Caress(uint8_t pins[], int size)
         void run(unsigned long time)
         void start(unsigned long startingTime, int interval, int shift)
+        void shake(unsigned long time)
+        void notify(uint8_t repeat)
     .. private ..
         uint8_t _pins[MAX_PINS]
         int _step
@@ -13,7 +15,9 @@ class Caress {
         int _numOfVib
         int _numOfSteps
         bool _caressing
-        unsigned long _lastCaress       
+        bool _shaking
+        unsigned long _lastCaress   
+        unsigned long _lastShake    
 }
 
 class Hug {    
@@ -43,7 +47,7 @@ class Heat {
 
 class WiFiConnection {
     .. public ..
-        WiFiConnection(String ssid, String password, WiFiServer server)
+        WiFiConnection(WiFiServer server)
         int getPort()
         bool searchClient()
         void setup()
@@ -53,14 +57,30 @@ class WiFiConnection {
         void stopClient()
     .. private ..
         void printData()
-        String _ssid
-        String _password
         int _port
         IPAddress _ip = *(new IPAddress(192, 168, 43, 179))
         IPAddress _gateway = *(new IPAddress(192, 168, 43, 1))
         IPAddress _subnet = *(new IPAddress(255, 255, 255, 0))
         WiFiServer _server = 0
         WiFiClient _client
+        Credentials _credentials
 }
+
+class Credantials {
+    .. public ..
+        Credentials()
+        void search()
+        bool arePresent()
+        bool readFromMemory()
+        String getSsid()
+        String getPassword()
+    .. private ..
+        bool _arePresent = false
+        String _password, _ssid
+        const String SSID_prefix = "SSID: "
+        const String PSW_prefix = "Password: "
+}
+
+Credantials -u-> "use" WiFiConnection 
 
 @enduml

@@ -1,7 +1,6 @@
 /**
- * This is the code running in the jacket
- * Please enter your sensitive data in the include/Secrets.h to run the WiFi network
- *
+ *  This is the code running in the jacket
+ *  The credentials to connect to the WiFi Network can be passed through the Bluetooth application
  */
 
 #include <Secrets.h>
@@ -10,10 +9,6 @@
 #include <Hug.h>
 #include <WiFiConnection.h>
 #include <Heat.h>
-
-// debug checking
-//#define DEBUG
-// #define BUTTON A0
 
 #define RX 3
 #define TX 1
@@ -63,61 +58,24 @@ WiFiConnection wifi(server);
 
 char msg;
 unsigned long exTime;
-#ifdef DEBUG
-  unsigned long startTime;
-  bool done1, done2, done3;
-#endif
 
 void setup() {
+  delay(5000);
   Serial.begin(9600);
   while (!Serial);
-  heatUnit.start(millis());
-
-  #ifdef DEBUG
-    startTime = millis();
-    done1=false;
-    done2=false;
-    done3=false;
-  #else
+  delay(5000);
+  Serial.println("D: Serial ready");
   
   wifi.setup();
   caressUnitLeft.notify(2);
-  #endif
+  heatUnit.start(millis());
 }
 
 void loop() {
-
-  #ifdef DEBUG
-  exTime = millis();
-  caressUnitLeft.run(exTime);
-  caressUnitRight.run(exTime);
-  hugUnit.run(exTime);
-  heatUnit.run(exTime);
+  //execute the heating loop even before the connection of the client
   delay(3);
-
-/*   if(!done1 && exTime - startTime > 8000){
-    hugUnit.start(exTime);
-    done1 = true;
-  }
-  if(!done2 && exTime - startTime > 18000){
-    caressUnitLeft.start(exTime, INTERVAL, SHIFT);
-    done2 = true;
-  }
-  if(!done3 && exTime - startTime > 22000){
-    caressUnitRight.start(exTime, INTERVAL, SHIFT);
-    done3 = true;
-  }
- */
-  if(exTime - startTime > 5100){
-    // caressUnitLeft.shake(exTime);
-    // caressUnitRight.shake(exTime);
-     caressUnitLeft.start(exTime, INTERVAL, SHIFT);
-    // caressUnitRight.start(exTime, INTERVAL, SHIFT);
-    startTime = exTime;
-  }
-
-
-  #else
+  exTime = millis();
+  heatUnit.run(exTime);
 
   if (wifi.searchClient()) {
     Serial.println("D: new client");
@@ -159,8 +117,9 @@ void loop() {
       // if client doesn't send ping for PING_TOLERANCE time, it is considered disconnected
       if (millis() - lastPing > PING_TOLERANCE) {
         wifi.stopClient();
+        caressUnitLeft.notify(2);
+        caressUnitRight.notify(2);
       }
     }
   }
-  #endif
 }
