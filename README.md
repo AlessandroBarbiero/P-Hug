@@ -69,6 +69,9 @@ The main idea is to build a client-server model to receive the information from 
 The code can be seen in the folders [Client](/Client/) for Giffy and [Server](/Server/) for the Jacket.
 
 ## Team
+
+ <img src="Documentation/Team Picture.jpg" width="600" /> 
+
 ### Engineers
 
 * [__Alessandro Barbiero__](https://github.com/AlessandroBarbiero)
